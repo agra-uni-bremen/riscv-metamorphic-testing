@@ -137,6 +137,9 @@ void ISS::exec_step() {
 		}
 		puts("");
 	}
+	
+	if (mutator->exec(op, *this, regs, instr))
+		return;
 
 	switch (op) {
 		case Opcode::UNDEF:

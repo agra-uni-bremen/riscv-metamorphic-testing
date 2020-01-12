@@ -41,6 +41,16 @@ struct ExitNotification {
 };
 
 
+struct ISS;
+struct RegFile;
+
+struct instr_mutator_if {
+	virtual ~instr_mutator_if() {}
+	
+	virtual bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) = 0;
+};
+
+
 struct RegFile {
 	static constexpr unsigned NUM_REGS = 32;
 
@@ -141,6 +151,7 @@ struct ISS : public external_interrupt_target, public clint_interrupt_target, pu
 	instr_memory_if *instr_mem = nullptr;
 	data_memory_if *mem = nullptr;
 	syscall_emulator_if *sys = nullptr;  // optional, if provided, the iss will intercept and handle syscalls directly
+	instr_mutator_if *mutator = nullptr;
 	RegFile regs;
 	FpRegs fp_regs;
 	uint32_t pc = 0;

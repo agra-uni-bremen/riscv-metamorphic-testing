@@ -1149,6 +1149,60 @@ std::shared_ptr<test_rule_if> random_rule(Random &random) {
 }
 
 
+struct NoMutation : instr_mutator_if {
+	bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) override {
+		return false;
+	}
+};
+
+template <Opcode::Mapping TargetOp, typename Impl, typename NameClass>
+struct OperationMutation : instr_mutator_if {
+	std::string name() {
+		return std::string(NameClass::Name);
+	}
+
+	bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) override {
+		if (op == TargetOp) {
+			static_cast<Impl*>(this)->apply(core, regs, instr);
+			return true;
+		}
+		return false;
+	}
+};
+
+
+#define MutationClass(OPCODE, NAME) 	\
+	struct MUTATION_CLASS_NAME_ ## OPCODE ## NAME { static constexpr auto Name = #OPCODE "-" #NAME; };	\
+										\
+	struct OPCODE ## _Mutation ## NAME : OperationMutation<Opcode::OPCODE, OPCODE ## _Mutation ## NAME, MUTATION_CLASS_NAME_ ## OPCODE ## NAME>
+
+
+MutationClass(ADD, 1) {
+	void apply(ISS &core, RegFile &regs, Instruction &instr) {
+		regs[instr.rd()] = regs[instr.rs1()] - regs[instr.rs2()];
+	}
+};
+
+MutationClass(ADD, 2) {
+	void apply(ISS &core, RegFile &regs, Instruction &instr) {
+		regs[instr.rd()] = regs[instr.rs1()] + regs[instr.rs2()] + 1;
+	}
+};
+
+MutationClass(ADD, 3) {
+	void apply(ISS &core, RegFile &regs, Instruction &instr) {
+		regs[instr.rd()] = (regs[instr.rs1()] + regs[instr.rs2()]) & ((1 << 30) - 1);
+	}
+};
+
+std::vector<std::shared_ptr<instr_mutator_if>> mutators {
+	std::make_shared<NoMutation>(),
+	std::make_shared<ADD_Mutation1>(),
+	std::make_shared<ADD_Mutation2>(),
+	std::make_shared<ADD_Mutation3>(),
+};
+
+
 int main(int argc, char **argv) {
     ISS core(0, false);
     Random random;
@@ -1158,10 +1212,15 @@ int main(int argc, char **argv) {
     core.randomize_state();
     //core.trace = true;
     
-    for (int i=0; i<10000; ++i) {
-		auto rule = random_rule(random);
-		rule->randomize(random);
-		rule->run(exec);
+    for (auto m : mutators) {
+    	std::cout << "> check mutator: " << std::endl;
+    	core.mutator = m.get();
+    	
+   	    for (int i=0; i<10000; ++i) {
+			auto rule = random_rule(random);
+			rule->randomize(random);
+			rule->run(exec);
+		}
     }
     
 	core.show();
