@@ -1,0 +1,393 @@
+There are two possibilities in general on how to apply the rules:
+ 1) load values and then apply the rule
+ 2) simply apply the rule on the current register values
+ 
+Perhaps (2) is the more natural approach???
+ 
+Furthermore, it might be a good idea to not inject a PC value but use a register based jump instead??? [when thinking about cross-level, i.e. RTL, and continuous execution, it might be a good idea to just observe the ISS but not change (which might need special synchronization at RTL) it except by normal instruction execution]
+
+
+add:
+----
+
+a + b == b + a
+
+add rd, rs1, rs2 == add rd, rs2, rs1
+
+
+Load1(rs,a) {
+	code->li(rs, a);
+	run();
+}
+
+Load2(rs1,a,rs2,b) {
+	code->li(rs1, a);
+	code->li(rs2, b);
+	run();
+}
+
+Add1(rd,rs1,rs2) {
+	unsigned rx, ry;
+
+	if (rd == rs1) {
+		rx = random_unique_reg(rd, rs1, rs2, 0);
+		code->mv(rx, rs1);
+	} else {
+		rx = rs1;
+	}
+	
+	if (rd == rs2) {
+		ry = random_unique_reg(rd, rs1, rs2, rx, 0);
+		code->mv(ry, rs2);
+	} else {
+		ry = rs2;
+	}
+		
+	code->add(rd, rs1, rs2);
+	auto v1 = run();
+	
+	code->add(rd, ry, rx);
+	auto v2 = run();
+	
+	ensure(v1 == v2);
+}
+
+
+AddRule1 {
+	unsigned rd, rs1, rs2;
+	uint32_t a, b;
+	
+	void randomize() {
+		rd = random_reg();
+		rs1 = random_reg();
+		rs2 = random_reg();
+		a = random_reg_value();
+		b = random_reg_value();
+	}
+	
+	void run(exec) {
+		exec.Load2(rs1, a, rs2, b);
+		exec.Add1(rd, rs1, rs2);
+	}
+}
+
+
+
+Lui2(rd,imm) {
+	code->lui(rd, imm);
+	auto v = run();
+	ensure(v == imm << 12);
+}
+
+LuiRule2 {
+	unsigned rd;
+	uint32_t imm;
+	
+	void randomize() {
+		rd = random_reg();
+		imm = random_u_imm();
+	}
+	
+	void run(exec) {
+		exec.Lui2(rd, imm);
+	}
+}
+
+
+Lui1(rd, imm) {
+	code->lui(rd, imm);
+	auto v1 = run();
+	
+	unsigned rx = random_unique_reg(rd, zero);
+	
+	code->addi(rd, zero, imm >> 10);
+	code->slli(rd, rd, 20);
+	code->ori(rx, zero, imm & 0xff);
+	code->slli(rx, rx, 12);
+	code->or(rd, rx, rd);
+	auto v2 = run();
+	
+	ensure(v1 == v2);
+}
+
+LuiRule1 {
+	unsigned rd;
+	uint32_t imm;
+	
+	void randomize() {
+		rd = random_reg();
+		imm = random_u_imm();
+	}
+	
+	void run(exec) {
+		exec.Lui1(rd, imm);
+	}
+}
+
+
+
+lui:
+----
+
+lui rd, imm == 
+	addi rd, zero, imm >> 10
+	slli rd, rd, 20
+	ori rx, zero, imm & 0xff
+	slli rx, rx, 12
+	or rx, rx, rd
+	
+lui rd, imm -> core.regs[rd] == imm << 12
+
+
+auipc:
+------
+
+
+
+sll:
+----
+
+mv rx, rs1
+@repeat(32) {
+	srli rd, rs1, 31
+	slli rs1, rs1, 1
+	or rs1, rs1, rd
+}
+@check( R[rx] == R[rs1] )
+
+
+@if R[rs1] == 0:
+	sll rd, rs1, rs2
+	@check( R[rd] == R[rs1] && R[rd] == 0 )
+	
+@elif R[rs2] == 0:
+	sll rd, rs1, rs2
+	@check( R[rd] == R[rs1] )
+	
+@elif rd != rs1:
+	sll rd, rs1, rs2
+	@check( R[rd] != R[rs1] )
+
+
+slt:
+----
+
+slt rd, rs1, rs2 ==
+	add rs1, rs1, rx
+	add rs2, rs2, ry
+	slt rd, rs1, rs2
+	
+	
+blt rs1, rs2, off => slt rd, rs1, rs2
+
+
+
+load/store:
+-----------
+
+lw rd, rs1, off      // R[rd] = Mem.LW(R[rs1] + off)
+
+1) address computation && 2) value processing
+
+
+@always @assume load/store address is properly aligned
+
+
+@assume R[rs1]+off1 == R[rs2]+off2
+lX rd, rs1, off1 == lX rd, rs2, off2
+
+
+// combine values
+
+lw rd, rs1, off == lhu rx, rs1, off; lhu ry, rs1, off+2; slli ry, ry, 16; or rx, rx, ry    { R[rd] == R[rx] }
+
+lw rd, rs1, off == 
+	lbu rx, rs1, off 
+	lbu ry, rs1, off+1
+	slli ry, ry, 8
+	or rx, rx, ry
+	lbu ry, rs1, off+2
+	slli ry, ry, 16
+	or rx, rx, ry
+	lbu ry, rs1, off+3
+	slli ry, ry, 24
+	or rx, rx, ry
+	{ R[rd] == R[rx] }
+
+lhu rd, rs1, off == lbu rx, rs1, off; lbu ry, rs1, off+1; slli ry, ry, 8; or rx, rx, ry    { R[rd] == R[rx] }
+
+
+// sign extension (by default all comparison operators do signed comparison in the following)
+
+@if R[rd] <= 0x7fff  (loaded value is smaller [negative in particular is fine too] than the max positive value of LH)
+lw rd, rs1, off == lh rd, rs1, off
+@else
+lw rd, rs1, off > lh rd, rs1, off
+
+@assume R[rd] <= 0x7f  (loaded value is smaller [negative in particular is fine too] than the max positive value of LB)
+lw rd, rs1, off == lb rd, rs1, off
+
+@assume R[rd] <= 0x7f  (loaded value is smaller [negative in particular is fine too] than the max positive value of LB)
+lh rd, rs1, off == lb rd, rs1, off
+
+
+lbu rd, rs1, off >= lb rd, rs1, off
+
+@if load-value <= 127
+lbu rd, rs1, off == lb rd, rs1, off
+@else
+lbu rd, rs1, off > lb rd, rs1, off
+
+
+
+lbu rd, rs1, off ==
+	lb rx, rs1, off
+	slli rx, rx, 24
+	srli rx, rx, 24
+	{ R[rd] == R[rx] }
+	
+lhu rd, rs1, off ==
+	lh rx, rs1, off
+	slli rx, rx, 16
+	srli rx, rx, 16
+	{ R[rd] == R[rx] }
+	
+	
+lh rd, rs1, off
+addi rx, zero, -1
+srli ry, rd, 16
+xor ry, ry, rx
+{ 
+	@if (R[rd] > ...)
+		R[ry] == zero
+	@else 
+		R[ry] == R[rx]
+}
+
+
+
+// load / store combo
+
+@assume rd != rs2	{ don't need this assumption actually, since the rule is also satisfied without it }
+sw rs2, rs1, off == lw rd, rs1, off		{ R[rd] == R[rs2] }
+sh rs2, rs1, off == lhu rd, rs1, off	{ R[rd] == R[rs2] }
+sb rs2, rs1, off == lbu rd, rs1, off	{ R[rd] == R[rs2] }
+
+
+# what happens if both load and store have a stuck at error (or e.g. apply XOR before storing / after loading)?
+-> this will be a problem
+-> how about checking the SW instruction (that the correct value is passed at the correct address to the memory interface?)
+
+
+CheckSW {
+	uint32_t addr;
+	uint32_t val;
+	
+	void store_word(uint32_t addr, uint32_t val) {
+		assert (this->addr == addr);
+		assert (this->val == val);
+		
+		memory->store_word(addr, val);
+	}
+	
+	void run() {
+		val = R[rs2];
+		addr = R[rs1];
+	
+		exec(sw rs2, rs1, 0);
+	}
+}
+
+
+MutateReg {
+	unsigned rx;
+	
+	void run() {
+		exec(LI(rx, rand()));
+	}
+}
+
+
+# probably slightly different rules for the sign-extension loads
+-> not necessary, since sign-extension rules for LB/LBU and LH/LHU are already defined
+
+
+jumps:
+------
+
+jal rd, x == jalr rd, rs1, y   iff x == R[rs1]+y
+
+@assume x \in J-Imm
+@assume x % 8 == 0
+j x == j x/2; j x/2;
+
+@assume x \in J-Imm
+@assume x != MIN_NEG     (not 2**19-1 because it has no positive counterpart)
+j x; j -x -> old_pc == new_pc
+
+j 0 -> old_pc == new_pc
+
+@invariant: rd!=0 => R[rd]==old_pc+4
+
+:: can do the same for JALR, then simply replace the J-Imm value assumption with Reg value.
+
+
+20: j 8
+24: ...
+28: ...  <-
+
+
+20: j 4
+24: ...
+28: ...  <-
+
+
+
+branches:
+---------
+
+beq rs1, rs2, off == beq rs1+x, rs2+x, off
+bne rs1, rs2, off == beq rs1+x, rs2+x, off
+
+
+@forall off >= 8 || off <= -8    (to be able to distinguish between branch taken and not taken)
+
+beq  rs1, rs2 || bne  rs1, rs2
+blt  rs1, rs2 || bge  rs1, rs2
+bltu rs1, rs2 || bgeu rs1, rs2
+
+beq  rs1, rs2 != bne  rs1, rs2
+blt  rs1, rs2 != bge  rs1, rs2
+bltu rs1, rs2 != bgeu rs1, rs2
+
+beq rs1, rs2 => bge  rs1, rs2
+beq rs1, rs2 => bgeu rs1, rs2
+
+blt  rs1, rs2 => bne rs1, rs2
+bltu rs1, rs2 => bne rs1, rs
+
+R[rs2] >= 0 or R[rs1] < 0:
+bge rs1, rs2 => bgeu rs1, rs2
+
+R[rs1] <= 2^31-1 or R[rs2] >= 2^31:
+bgeu rs1, rs2 => bge rs1, rs2
+
+// ??? similar rules for blt and bltu ???
+
+
+
+not bX rs1, rs2 => next-pc == orig-pc + 4
+
+bX rs1, rs2 => all jump rules // probably don't need to do jump rules for branches again, since we can simply compare branch against the jumps
+
+e.g.:
+bX rs1, rs2 => bX rs1, rs2, off == bX rs1, rs2, off/2; bX rs1, rs2, off/2
+bX rs1, rs2 => bX rs1, rs2, off :: bX rs1, rs2, -off
+
+
+bX rs1, rs2 => bX rs1, rs2, off == jal rd, off
+bX rs1, rs2 => bX rs1, rs2, off :: jal rd, -off
+bX rs1, rs2 => bX rs1, rs2, off == jalr rd, zero, off
+bX rs1, rs2 => bX rs1, rs2, off :: jalr rd, zero, off
+
+
