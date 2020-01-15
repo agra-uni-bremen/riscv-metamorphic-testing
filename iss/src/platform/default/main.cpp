@@ -555,6 +555,10 @@ struct DefaultLoadStoreMemoryInterface : public EmptyMemoryInterface {
 };
 
 
+struct RuleCheckFailed : std::runtime_error {
+	using runtime_error::runtime_error;
+};
+
 
 struct Executor : public DefaultLoadStoreMemoryInterface {
 	ISS &core;
@@ -589,7 +593,7 @@ struct Executor : public DefaultLoadStoreMemoryInterface {
 	
 	void check(bool cond) {
 		if (!cond)
-			throw std::runtime_error("ERROR: rule check failed");
+			throw RuleCheckFailed("ERROR: rule check failed");
 	}
 };
 
@@ -601,6 +605,8 @@ struct test_rule_if {
 	virtual void randomize(Random &random) = 0;
 	
 	virtual void run(Executor &exec) = 0;
+	
+	virtual std::string to_string() = 0;
 };
 
 
@@ -608,7 +614,20 @@ struct ADD_Comm : public test_rule_if {
 	unsigned rd1, rd2, rs1, rs2;
 	uint32_t a, b;
 	
-	void randomize(Random &random) {
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss 	<< "ADD_Comm(\n" 
+			<< "    rd1=" << rd1 << "\n"
+			<< "    rd2=" << rd2 << "\n"
+			<< "    rs1=" << rs1 << "\n"
+			<< "    rs2=" << rs2 << "\n"
+			<< "    a=" << a << "\n"
+			<< "    b=" << b << "\n"
+			<< ")";
+		return ss.str();
+	}
+	
+	void randomize(Random &random) override {
 		rs1 = random.reg();
 		rs2 = random.reg();
 		rd1 = random.unique_reg({rs1, rs2, zero});
@@ -617,7 +636,7 @@ struct ADD_Comm : public test_rule_if {
 		b = random.reg_val();
 	}
 	
-	void run(Executor &x) {
+	void run(Executor &x) override {
 		x.code.LI(rs1, a);
 		x.code.LI(rs2, b);
 		x.code.ADD(rd1, rs1, rs2);
@@ -631,6 +650,22 @@ struct ADD_Comm : public test_rule_if {
 struct ADD_Split : public test_rule_if {
 	unsigned rd1, rd2, rs1, rs2, rx, ry;
 	uint32_t a, b;
+	
+	// ./gen_to_string.py ADD_Split rd1 rd2 rs1 rs2 rx ry a b
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "ADD_Split(\n" 
+			<< "    rd1 = " << rd1 << "\n"
+			<< "    rd2 = " << rd2 << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rs2 = " << rs2 << "\n"
+			<< "    rx = " << rx << "\n"
+			<< "    ry = " << ry << "\n"
+			<< "    a = " << a << "\n"
+			<< "    b = " << b << "\n"
+			<< ")";
+		return ss.str();
+	}
 	
 	void randomize(Random &random) {
 		rs1 = random.reg();
@@ -663,7 +698,23 @@ struct ADD_Split : public test_rule_if {
 
 struct ADD_Split2 : public test_rule_if {
 	unsigned rd1, rd2, rs1, rs2;
-	uint32_t a, b, b_low, b_high;	
+	uint32_t a, b, b_low, b_high;
+	
+	// ./gen_to_string.py ADD_Split2 rd1 rd2 rs1 rs2 a b b_low b_high
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "ADD_Split2(\n" 
+			<< "    rd1 = " << rd1 << "\n"
+			<< "    rd2 = " << rd2 << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rs2 = " << rs2 << "\n"
+			<< "    a = " << a << "\n"
+			<< "    b = " << b << "\n"
+			<< "    b_low = " << b_low << "\n"
+			<< "    b_high = " << b_high << "\n"
+			<< ")";
+		return ss.str();
+	}
 	
 	void randomize(Random &random) {
 		rs1 = random.reg();
@@ -697,6 +748,20 @@ struct ADD_Change : public test_rule_if {
 	unsigned rd, rs1, rs2;
 	uint32_t a, b;
 	
+	// ./gen_to_string.py ADD_Change rd rs1 rs2 a b
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "ADD_Change(\n" 
+			<< "    rd = " << rd << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rs2 = " << rs2 << "\n"
+			<< "    a = " << a << "\n"
+			<< "    b = " << b << "\n"
+			<< ")";
+		return ss.str();
+	}
+
+	
 	void randomize(Random &random) {
 		rs1 = random.reg();
 		rs2 = random.reg();
@@ -723,6 +788,19 @@ struct ADD_Change : public test_rule_if {
 struct ADD_Assoc : public test_rule_if {
 	unsigned rd1, rd2, rs1, rs2, rs3;
 	uint32_t a, b, c;
+	
+	// ./gen_to_string.py ADD_Assoc rd1 rd2 rs1 rs2 rs3
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "ADD_Assoc(\n" 
+			<< "    rd1 = " << rd1 << "\n"
+			<< "    rd2 = " << rd2 << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rs2 = " << rs2 << "\n"
+			<< "    rs3 = " << rs3 << "\n"
+			<< ")";
+		return ss.str();
+	}
 	
 	void randomize(Random &random) {
 		rs1 = random.reg();
@@ -773,6 +851,22 @@ enum class LoadInstr {
 };
 
 template <LoadInstr T>
+std::string GetEnumName() {
+	switch (T) {
+		case LoadInstr::LB:
+			return "LB";
+		case LoadInstr::LBU:
+			return "LBU";
+		case LoadInstr::LH:
+			return "LH";
+		case LoadInstr::LHU:
+			return "LHU";
+		case LoadInstr::LW:
+			return "LW";
+	}
+}
+
+template <LoadInstr T>
 constexpr unsigned GetAlignWidth() {
 	if (T == LoadInstr::LB || T == LoadInstr::LBU)
 		return 1;
@@ -791,6 +885,22 @@ struct LX_AddrId : public test_rule_if {
 	unsigned rd1, rd2, rs1, rs2;
 	int32_t a, b;
 	int off1, off2;
+	
+	// ./gen_to_string.py LX_AddrId rd1 rd2 rs1 rs2 a b off1 off2
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "LX_AddrId<" << GetEnumName<T>() << ">(\n" 
+			<< "    rd1 = " << rd1 << "\n"
+			<< "    rd2 = " << rd2 << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rs2 = " << rs2 << "\n"
+			<< "    a = " << a << "\n"
+			<< "    b = " << b << "\n"
+			<< "    off1 = " << off1 << "\n"
+			<< "    off2 = " << off2 << "\n"
+			<< ")";
+		return ss.str();
+	}
 	
 	void randomize(Random &random) {
 		rs1 = random.reg();
@@ -845,6 +955,20 @@ struct SX_LX_Id : public test_rule_if {
 	int32_t a, b;
 	int off;
 	
+	// ./gen_to_string.py SX_LX_Id rd rs1 rs2 a b off
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "SX_LX_Id<" << N << ">(\n" 
+			<< "    rd = " << rd << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rs2 = " << rs2 << "\n"
+			<< "    a = " << a << "\n"
+			<< "    b = " << b << "\n"
+			<< "    off = " << off << "\n"
+			<< ")";
+		return ss.str();
+	}
+	
 	void randomize(Random &random) {
 		rs1 = random.reg();
 		rs2 = random.reg();
@@ -890,6 +1014,20 @@ struct LW_Combine2 : public test_rule_if {
 	uint32_t a;
 	int off;
 	
+	// ./gen_to_string.py LW_Combine2 rd rs1 rx ry a off
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "LW_Combine2(\n" 
+			<< "    rd = " << rd << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rx = " << rx << "\n"
+			<< "    ry = " << ry << "\n"
+			<< "    a = " << a << "\n"
+			<< "    off = " << off << "\n"
+			<< ")";
+		return ss.str();
+	}
+	
 	void randomize(Random &random) {
 		rs1 = random.unique_reg({zero});
 		rd = random.unique_reg({rs1, zero});
@@ -927,6 +1065,20 @@ struct LHU_Combine2 : public test_rule_if {
 	unsigned rd, rs1, rx, ry;
 	uint32_t a;
 	int off;
+	
+	// ./gen_to_string.py LHU_Combine2 rd rs1 rx ry a off
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "LHU_Combine2(\n" 
+			<< "    rd = " << rd << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rx = " << rx << "\n"
+			<< "    ry = " << ry << "\n"
+			<< "    a = " << a << "\n"
+			<< "    off = " << off << "\n"
+			<< ")";
+		return ss.str();
+	}
 	
 	void randomize(Random &random) {
 		rs1 = random.unique_reg({zero});
@@ -973,6 +1125,19 @@ struct LX_ExtCheck : public test_rule_if {
 	unsigned rd, rs1, rx;
 	uint32_t a;
 	int off;
+	
+	// ./gen_to_string.py LX_ExtCheck rd rs1 rx a off
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "LX_ExtCheck<" << GetEnumName<T>() << ">(\n" 
+			<< "    rd = " << rd << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rx = " << rx << "\n"
+			<< "    a = " << a << "\n"
+			<< "    off = " << off << "\n"
+			<< ")";
+		return ss.str();
+	}
 	
 	void randomize(Random &random) {
 		rs1 = random.reg();
@@ -1025,6 +1190,20 @@ struct LXU_LX_Rel : public test_rule_if {
 	uint32_t a;
 	int off;
 	
+	// ./gen_to_string.py LXU_LX_Rel rd rs1 rx ry a off
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "LXU_LX_Rel<" << N << ">(\n" 
+			<< "    rd = " << rd << "\n"
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rx = " << rx << "\n"
+			<< "    ry = " << ry << "\n"
+			<< "    a = " << a << "\n"
+			<< "    off = " << off << "\n"
+			<< ")";
+		return ss.str();
+	}
+	
 	void randomize(Random &random) {
 		rs1 = random.reg();
 		rd = random.unique_reg({rs1, zero});
@@ -1072,6 +1251,18 @@ struct SW_RefCheck : public test_rule_if, public EmptyMemoryInterface {
 	uint32_t a, b;
 	uint64_t observed_addr;
 	uint32_t observed_value;
+	
+	// ./gen_to_string.py SW_RefCheck rs1 rs2 a b
+	std::string to_string() override {
+		std::ostringstream ss;
+		ss	<< "SW_RefCheck(\n" 
+			<< "    rs1 = " << rs1 << "\n"
+			<< "    rs2 = " << rs2 << "\n"
+			<< "    a = " << a << "\n"
+			<< "    b = " << b << "\n"
+			<< ")";
+		return ss.str();
+	}
 	
 	void randomize(Random &random) {
 		rs1 = random.reg();
@@ -1149,7 +1340,7 @@ std::shared_ptr<test_rule_if> random_rule(Random &random) {
 }
 
 
-struct EmptyMutation : exec_mutator_if {	
+struct EmptyMutation : exec_mutator_if {
 	bool exec(Opcode::Mapping op, ISS &core) override {
 		return false;
 	}
@@ -1227,7 +1418,17 @@ std::vector<std::shared_ptr<exec_mutator_if>> mutators {
 };
 
 
+struct KilledMutation {
+	std::shared_ptr<exec_mutator_if> mutator;
+	std::string kill_test;
+	unsigned num_iterations;
+};
+
+
 int main(int argc, char **argv) {
+	constexpr unsigned max_iterations_per_mutant = 100000;
+	std::vector<KilledMutation> killed_mutations;
+
     ISS core(0, false);
     Random random;
     RandomLazyMemory mem(random);
@@ -1237,17 +1438,33 @@ int main(int argc, char **argv) {
     //core.trace = true;
     
     for (auto m : mutators) {
-    	std::cout << "> check mutator: " << std::endl;
+    	std::cout << "> check mutator: " << m->name() << std::endl;
     	core.mutator = m.get();
     	
-   	    for (int i=0; i<10000; ++i) {
-			auto rule = random_rule(random);
-			rule->randomize(random);
-			rule->run(exec);
+    	unsigned i;
+    	std::shared_ptr<test_rule_if> rule;
+    	try {
+	   	    for (i=0; i<max_iterations_per_mutant; ++i) {
+				rule = random_rule(random);
+				rule->randomize(random);
+				rule->run(exec);
+			}
+		} catch (RuleCheckFailed &e) {
+			killed_mutations.push_back({m, rule->to_string(), i+1});
 		}
     }
-    
+
+	std::cout << "\n";    
 	core.show();
+	
+	std::cout << "\n";
+	for (unsigned k=0; k<killed_mutations.size(); ++k) {
+		auto &e = killed_mutations[k];
+		std::cout << "[" << k+1 << "] killed mutation: " << e.mutator->name() 
+					<< ", by rule: " << e.kill_test 
+					<< " after " << e.num_iterations << " iterations\n" << std::endl;
+	}
+	std::cout << "total killed mutations: " << killed_mutations.size() << " / " << mutators.size() << std::endl;
 
     return 0;
 }
