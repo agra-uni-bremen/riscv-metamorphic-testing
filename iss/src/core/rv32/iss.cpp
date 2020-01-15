@@ -150,202 +150,202 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::ADDI:
-			regs[instr.rd()] = regs[instr.rs1()] + instr.I_imm();
+			write_reg(rd(), read_reg(rs1()) + I_imm());
 			break;
 
 		case Opcode::SLTI:
-			regs[instr.rd()] = regs[instr.rs1()] < instr.I_imm();
+			write_reg(rd(), read_reg(rs1()) < I_imm());
 			break;
 
 		case Opcode::SLTIU:
-			regs[instr.rd()] = ((uint32_t)regs[instr.rs1()]) < ((uint32_t)instr.I_imm());
+			write_reg(rd(), ((uint32_t)read_reg(rs1())) < ((uint32_t)I_imm()));
 			break;
 
 		case Opcode::XORI:
-			regs[instr.rd()] = regs[instr.rs1()] ^ instr.I_imm();
+			write_reg(rd(), read_reg(rs1()) ^ I_imm());
 			break;
 
 		case Opcode::ORI:
-			regs[instr.rd()] = regs[instr.rs1()] | instr.I_imm();
+			write_reg(rd(), read_reg(rs1()) | I_imm());
 			break;
 
 		case Opcode::ANDI:
-			regs[instr.rd()] = regs[instr.rs1()] & instr.I_imm();
+			write_reg(rd(), read_reg(rs1()) & I_imm());
 			break;
 
 		case Opcode::ADD:
-			regs[instr.rd()] = regs[instr.rs1()] + regs[instr.rs2()];
+			write_reg(rd(), read_reg(rs1()) + read_reg(rs2()));
 			break;
 
 		case Opcode::SUB:
-			regs[instr.rd()] = regs[instr.rs1()] - regs[instr.rs2()];
+			write_reg(rd(), read_reg(rs1()) - read_reg(rs2()));
 			break;
 
 		case Opcode::SLL:
-			regs[instr.rd()] = regs[instr.rs1()] << regs.shamt(instr.rs2());
+			write_reg(rd(), read_reg(rs1()) << regs.shamt(rs2()));
 			break;
 
 		case Opcode::SLT:
-			regs[instr.rd()] = regs[instr.rs1()] < regs[instr.rs2()];
+			write_reg(rd(), read_reg(rs1()) < read_reg(rs2()));
 			break;
 
 		case Opcode::SLTU:
-			regs[instr.rd()] = ((uint32_t)regs[instr.rs1()]) < ((uint32_t)regs[instr.rs2()]);
+			write_reg(rd(), ((uint32_t)read_reg(rs1())) < ((uint32_t)read_reg(rs2())));
 			break;
 
 		case Opcode::SRL:
-			regs[instr.rd()] = ((uint32_t)regs[instr.rs1()]) >> regs.shamt(instr.rs2());
+			write_reg(rd(), ((uint32_t)read_reg(rs1())) >> regs.shamt(rs2()));
 			break;
 
 		case Opcode::SRA:
-			regs[instr.rd()] = regs[instr.rs1()] >> regs.shamt(instr.rs2());
+			write_reg(rd(), read_reg(rs1()) >> regs.shamt(rs2()));
 			break;
 
 		case Opcode::XOR:
-			regs[instr.rd()] = regs[instr.rs1()] ^ regs[instr.rs2()];
+			write_reg(rd(), read_reg(rs1()) ^ read_reg(rs2()));
 			break;
 
 		case Opcode::OR:
-			regs[instr.rd()] = regs[instr.rs1()] | regs[instr.rs2()];
+			write_reg(rd(), read_reg(rs1()) | read_reg(rs2()));
 			break;
 
 		case Opcode::AND:
-			regs[instr.rd()] = regs[instr.rs1()] & regs[instr.rs2()];
+			write_reg(rd(), read_reg(rs1()) & read_reg(rs2()));
 			break;
 
 		case Opcode::SLLI:
-			regs[instr.rd()] = regs[instr.rs1()] << instr.shamt();
+			write_reg(rd(), read_reg(rs1()) << shamt());
 			break;
 
 		case Opcode::SRLI:
-			regs[instr.rd()] = ((uint32_t)regs[instr.rs1()]) >> instr.shamt();
+			write_reg(rd(), ((uint32_t)read_reg(rs1())) >> shamt());
 			break;
 
 		case Opcode::SRAI:
-			regs[instr.rd()] = regs[instr.rs1()] >> instr.shamt();
+			write_reg(rd(), read_reg(rs1()) >> shamt());
 			break;
 
 		case Opcode::LUI:
-			regs[instr.rd()] = instr.U_imm();
+			write_reg(rd(), U_imm());
 			break;
 
 		case Opcode::AUIPC:
-			regs[instr.rd()] = last_pc + instr.U_imm();
+			write_reg(rd(), last_pc + U_imm());
 			break;
 
 		case Opcode::JAL: {
 			auto link = pc;
-			pc = last_pc + instr.J_imm();
+			pc = last_pc + J_imm();
 			trap_check_pc_alignment();
-			regs[instr.rd()] = link;
+			write_reg(rd(), link);
 		} break;
 
 		case Opcode::JALR: {
 			auto link = pc;
-			pc = (regs[instr.rs1()] + instr.I_imm()) & ~1;
+			pc = (read_reg(rs1()) + I_imm()) & ~1;
 			trap_check_pc_alignment();
-			regs[instr.rd()] = link;
+			write_reg(rd(), link);
 		} break;
 
 		case Opcode::SB: {
-			uint32_t addr = regs[instr.rs1()] + instr.S_imm();
-			uint32_t val = regs[instr.rs2()];
+			uint32_t addr = read_reg(rs1()) + S_imm();
+			uint32_t val = read_reg(rs2());
 			maybe_mutate_store_access(addr, val);
 			mem->store_byte(addr, val);
 		} break;
 
 		case Opcode::SH: {
-			uint32_t addr = regs[instr.rs1()] + instr.S_imm();
+			uint32_t addr = read_reg(rs1()) + S_imm();
 			trap_check_addr_alignment<2, false>(addr);
-			uint32_t val = regs[instr.rs2()];
+			uint32_t val = read_reg(rs2());
 			maybe_mutate_store_access(addr, val);
 			mem->store_half(addr, val);
 		} break;
 
 		case Opcode::SW: {
-			uint32_t addr = regs[instr.rs1()] + instr.S_imm();
+			uint32_t addr = read_reg(rs1()) + S_imm();
 			trap_check_addr_alignment<4, false>(addr);
-			uint32_t val = regs[instr.rs2()];
+			uint32_t val = read_reg(rs2());
 			maybe_mutate_store_access(addr, val);
 			mem->store_word(addr, val);
 		} break;
 
 		case Opcode::LB: {
-			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
+			uint32_t addr = read_reg(rs1()) + I_imm();
 			addr = maybe_mutate_load_addr(addr);
 			auto val = mem->load_byte(addr);
-			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
+			write_reg(rd(), maybe_mutate_load_value(addr, val));
 		} break;
 
 		case Opcode::LH: {
-			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
+			uint32_t addr = read_reg(rs1()) + I_imm();
 			trap_check_addr_alignment<2, true>(addr);
 			addr = maybe_mutate_load_addr(addr);
 			auto val = mem->load_half(addr);
-			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
+			write_reg(rd(), maybe_mutate_load_value(addr, val));
 		} break;
 
 		case Opcode::LW: {
-			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
+			uint32_t addr = read_reg(rs1()) + I_imm();
 			trap_check_addr_alignment<4, true>(addr);
 			addr = maybe_mutate_load_addr(addr);
 			auto val = mem->load_word(addr);
-			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
+			write_reg(rd(), maybe_mutate_load_value(addr, val));
 		} break;
 
 		case Opcode::LBU: {
-			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
+			uint32_t addr = read_reg(rs1()) + I_imm();
 			addr = maybe_mutate_load_addr(addr);
 			auto val = mem->load_ubyte(addr);
-			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
+			write_reg(rd(), maybe_mutate_load_value(addr, val));
 		} break;
 
 		case Opcode::LHU: {
-			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
+			uint32_t addr = read_reg(rs1()) + I_imm();
 			trap_check_addr_alignment<2, true>(addr);
 			addr = maybe_mutate_load_addr(addr);
 			auto val = mem->load_uhalf(addr);
-			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
+			write_reg(rd(), maybe_mutate_load_value(addr, val));
 		} break;
 
 		case Opcode::BEQ:
-			if (regs[instr.rs1()] == regs[instr.rs2()]) {
-				pc = last_pc + instr.B_imm();
+			if (read_reg(rs1()) == read_reg(rs2())) {
+				pc = last_pc + B_imm();
 				trap_check_pc_alignment();
 			}
 			break;
 
 		case Opcode::BNE:
-			if (regs[instr.rs1()] != regs[instr.rs2()]) {
-				pc = last_pc + instr.B_imm();
+			if (read_reg(rs1()) != read_reg(rs2())) {
+				pc = last_pc + B_imm();
 				trap_check_pc_alignment();
 			}
 			break;
 
 		case Opcode::BLT:
-			if (regs[instr.rs1()] < regs[instr.rs2()]) {
-				pc = last_pc + instr.B_imm();
+			if (read_reg(rs1()) < read_reg(rs2())) {
+				pc = last_pc + B_imm();
 				trap_check_pc_alignment();
 			}
 			break;
 
 		case Opcode::BGE:
-			if (regs[instr.rs1()] >= regs[instr.rs2()]) {
-				pc = last_pc + instr.B_imm();
+			if (read_reg(rs1()) >= read_reg(rs2())) {
+				pc = last_pc + B_imm();
 				trap_check_pc_alignment();
 			}
 			break;
 
 		case Opcode::BLTU:
-			if ((uint32_t)regs[instr.rs1()] < (uint32_t)regs[instr.rs2()]) {
-				pc = last_pc + instr.B_imm();
+			if ((uint32_t)read_reg(rs1()) < (uint32_t)read_reg(rs2())) {
+				pc = last_pc + B_imm();
 				trap_check_pc_alignment();
 			}
 			break;
 
 		case Opcode::BGEU:
-			if ((uint32_t)regs[instr.rs1()] >= (uint32_t)regs[instr.rs2()]) {
-				pc = last_pc + instr.B_imm();
+			if ((uint32_t)read_reg(rs1()) >= (uint32_t)read_reg(rs2())) {
+				pc = last_pc + B_imm();
 				trap_check_pc_alignment();
 			}
 			break;
