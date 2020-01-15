@@ -1149,21 +1149,42 @@ std::shared_ptr<test_rule_if> random_rule(Random &random) {
 }
 
 
-struct NoMutation : instr_mutator_if {
-	bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) override {
+struct EmptyMutation : exec_mutator_if {	
+	bool exec(Opcode::Mapping op, ISS &core) override {
 		return false;
 	}
+	
+	void mutate_read_reg(Opcode::Mapping op, unsigned idx, int32_t &value) override { }
+	void mutate_read_shamt(Opcode::Mapping op, unsigned idx, uint32_t &value) override { }
+	void mutate_write_reg(Opcode::Mapping op, unsigned idx, int32_t &value) override { }
+	
+	void mutate_I_imm(Opcode::Mapping op, int32_t &I_imm) override { }
+	void mutate_S_imm(Opcode::Mapping op, int32_t &S_imm) override { }
+	void mutate_B_imm(Opcode::Mapping op, int32_t &B_imm) override { }
+	void mutate_U_imm(Opcode::Mapping op, int32_t &U_imm) override { }
+	void mutate_J_imm(Opcode::Mapping op, int32_t &J_imm) override { }
+	
+	void mutate_rs1(Opcode::Mapping op, unsigned &idx) override { }
+	void mutate_rs2(Opcode::Mapping op, unsigned &idx) override { }
+	void mutate_rd(Opcode::Mapping op, unsigned &idx) override { }
+	void mutate_shamt(Opcode::Mapping op, unsigned &shamt) override { }
+	
+	void mutate_load_addr(Opcode::Mapping op, uint32_t &addr) override { }	
+	void mutate_load_value(Opcode::Mapping op, uint32_t addr, int32_t &value) override { }
+	void mutate_store_access(Opcode::Mapping op, uint32_t &addr, uint32_t &value) override { }
+	
+	std::string name() override { return "EmptyMutation"; }
 };
 
 template <Opcode::Mapping TargetOp, typename Impl, typename NameClass>
-struct OperationMutation : instr_mutator_if {
-	std::string name() {
+struct OperationMutation : EmptyMutation {
+	std::string name() override {
 		return std::string(NameClass::Name);
 	}
 
-	bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) override {
+	bool exec(Opcode::Mapping op, ISS &core) override {
 		if (op == TargetOp) {
-			static_cast<Impl*>(this)->apply(core, regs, instr);
+			static_cast<Impl*>(this)->apply(core);
 			return true;
 		}
 		return false;
@@ -1178,25 +1199,28 @@ struct OperationMutation : instr_mutator_if {
 
 
 MutationClass(ADD, 1) {
-	void apply(ISS &core, RegFile &regs, Instruction &instr) {
-		regs[instr.rd()] = regs[instr.rs1()] - regs[instr.rs2()];
+	void apply(ISS &core) {
+		auto x = core.read_reg(core.rs1()) - core.read_reg(core.rs2());
+		core.write_reg(core.rd(), x);
 	}
 };
 
 MutationClass(ADD, 2) {
-	void apply(ISS &core, RegFile &regs, Instruction &instr) {
-		regs[instr.rd()] = regs[instr.rs1()] + regs[instr.rs2()] + 1;
+	void apply(ISS &core) {
+		auto x = core.read_reg(core.rs1()) + core.read_reg(core.rs2()) + 1;
+		core.write_reg(core.rd(), x);
 	}
 };
 
 MutationClass(ADD, 3) {
-	void apply(ISS &core, RegFile &regs, Instruction &instr) {
-		regs[instr.rd()] = (regs[instr.rs1()] + regs[instr.rs2()]) & ((1 << 30) - 1);
+	void apply(ISS &core) {
+		auto x = (core.read_reg(core.rs1()) + core.read_reg(core.rs2())) & ((1 << 30) - 1);
+		core.write_reg(core.rd(), x);
 	}
 };
 
-std::vector<std::shared_ptr<instr_mutator_if>> mutators {
-	std::make_shared<NoMutation>(),
+std::vector<std::shared_ptr<exec_mutator_if>> mutators {
+	std::make_shared<EmptyMutation>(),
 	std::make_shared<ADD_Mutation1>(),
 	std::make_shared<ADD_Mutation2>(),
 	std::make_shared<ADD_Mutation3>(),

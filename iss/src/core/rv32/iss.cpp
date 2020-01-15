@@ -138,7 +138,7 @@ void ISS::exec_step() {
 		puts("");
 	}
 	
-	if (mutator->exec(op, *this, regs, instr))
+	if (mutator->exec(op, *this))
 		return;
 
 	switch (op) {
@@ -249,47 +249,63 @@ void ISS::exec_step() {
 
 		case Opcode::SB: {
 			uint32_t addr = regs[instr.rs1()] + instr.S_imm();
-			mem->store_byte(addr, regs[instr.rs2()]);
+			uint32_t val = regs[instr.rs2()];
+			maybe_mutate_store_access(addr, val);
+			mem->store_byte(addr, val);
 		} break;
 
 		case Opcode::SH: {
 			uint32_t addr = regs[instr.rs1()] + instr.S_imm();
 			trap_check_addr_alignment<2, false>(addr);
-			mem->store_half(addr, regs[instr.rs2()]);
+			uint32_t val = regs[instr.rs2()];
+			maybe_mutate_store_access(addr, val);
+			mem->store_half(addr, val);
 		} break;
 
 		case Opcode::SW: {
 			uint32_t addr = regs[instr.rs1()] + instr.S_imm();
 			trap_check_addr_alignment<4, false>(addr);
-			mem->store_word(addr, regs[instr.rs2()]);
+			uint32_t val = regs[instr.rs2()];
+			maybe_mutate_store_access(addr, val);
+			mem->store_word(addr, val);
 		} break;
 
 		case Opcode::LB: {
 			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
-			regs[instr.rd()] = mem->load_byte(addr);
+			addr = maybe_mutate_load_addr(addr);
+			auto val = mem->load_byte(addr);
+			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
 		} break;
 
 		case Opcode::LH: {
 			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
 			trap_check_addr_alignment<2, true>(addr);
-			regs[instr.rd()] = mem->load_half(addr);
+			addr = maybe_mutate_load_addr(addr);
+			auto val = mem->load_half(addr);
+			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
 		} break;
 
 		case Opcode::LW: {
 			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
 			trap_check_addr_alignment<4, true>(addr);
-			regs[instr.rd()] = mem->load_word(addr);
+			addr = maybe_mutate_load_addr(addr);
+			auto val = mem->load_word(addr);
+			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
 		} break;
 
 		case Opcode::LBU: {
 			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
-			regs[instr.rd()] = mem->load_ubyte(addr);
+			addr = maybe_mutate_load_addr(addr);
+			auto val = mem->load_ubyte(addr);
+			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
 		} break;
 
 		case Opcode::LHU: {
 			uint32_t addr = regs[instr.rs1()] + instr.I_imm();
 			trap_check_addr_alignment<2, true>(addr);
-			regs[instr.rd()] = mem->load_uhalf(addr);
+			addr = maybe_mutate_load_addr(addr);
+			auto val = mem->load_uhalf(addr);
+			regs[instr.rd()] = maybe_mutate_load_value(addr, val);
 		} break;
 
 		case Opcode::BEQ:

@@ -44,10 +44,31 @@ struct ExitNotification {
 struct ISS;
 struct RegFile;
 
-struct instr_mutator_if {
-	virtual ~instr_mutator_if() {}
+struct exec_mutator_if {
+	virtual ~exec_mutator_if() {}
 	
-	virtual bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) = 0;
+	virtual bool exec(Opcode::Mapping op, ISS &core) = 0;
+	
+	virtual void mutate_read_reg(Opcode::Mapping op, unsigned idx, int32_t &value) = 0;
+	virtual void mutate_read_shamt(Opcode::Mapping op, unsigned idx, uint32_t &value) = 0;
+	virtual void mutate_write_reg(Opcode::Mapping op, unsigned idx, int32_t &value) = 0;
+	
+	virtual void mutate_I_imm(Opcode::Mapping op, int32_t &I_imm) = 0;
+	virtual void mutate_S_imm(Opcode::Mapping op, int32_t &S_imm) = 0;
+	virtual void mutate_B_imm(Opcode::Mapping op, int32_t &B_imm) = 0;
+	virtual void mutate_U_imm(Opcode::Mapping op, int32_t &U_imm) = 0;
+	virtual void mutate_J_imm(Opcode::Mapping op, int32_t &J_imm) = 0;
+	
+	virtual void mutate_rs1(Opcode::Mapping op, unsigned &idx) = 0;
+	virtual void mutate_rs2(Opcode::Mapping op, unsigned &idx) = 0;
+	virtual void mutate_rd(Opcode::Mapping op, unsigned &idx) = 0;
+	virtual void mutate_shamt(Opcode::Mapping op, unsigned &shamt) = 0;
+	
+	virtual void mutate_load_addr(Opcode::Mapping op, uint32_t &addr) = 0;	
+	virtual void mutate_load_value(Opcode::Mapping op, uint32_t addr, int32_t &value) = 0;
+	virtual void mutate_store_access(Opcode::Mapping op, uint32_t &addr, uint32_t &value) = 0;
+	
+	virtual std::string name() = 0;
 };
 
 
@@ -151,7 +172,7 @@ struct ISS : public external_interrupt_target, public clint_interrupt_target, pu
 	instr_memory_if *instr_mem = nullptr;
 	data_memory_if *mem = nullptr;
 	syscall_emulator_if *sys = nullptr;  // optional, if provided, the iss will intercept and handle syscalls directly
-	instr_mutator_if *mutator = nullptr;
+	exec_mutator_if *mutator = nullptr;
 	RegFile regs;
 	FpRegs fp_regs;
 	uint32_t pc = 0;
@@ -175,7 +196,57 @@ struct ISS : public external_interrupt_target, public clint_interrupt_target, pu
 
 	ISS(uint32_t hart_id, bool use_E_base_isa = false);
 	
+
 	void randomize_state();
+	
+	int32_t read_reg(unsigned idx) {
+		auto val = regs[idx];
+		mutator->mutate_read_reg(op, idx, val);
+		return val;
+	}
+	
+	uint32_t read_shamt(unsigned idx) {
+		auto val = regs.shamt(idx);
+		mutator->mutate_read_shamt(op, idx, val);
+		return val;
+	}
+	
+	void write_reg(unsigned idx, int32_t val) {
+		mutator->mutate_write_reg(op, idx, val);
+		regs[idx] = val;
+	}
+	
+#define DEFINE_INSTR_FIELD_ACCESS(NAME)			\
+	auto NAME() {								\
+		auto x = instr.NAME();					\
+		mutator->mutate_ ## NAME(op, x);		\
+		return x;								\
+	}
+	
+	DEFINE_INSTR_FIELD_ACCESS(I_imm);
+	DEFINE_INSTR_FIELD_ACCESS(S_imm);
+	DEFINE_INSTR_FIELD_ACCESS(U_imm);
+	DEFINE_INSTR_FIELD_ACCESS(J_imm);
+	DEFINE_INSTR_FIELD_ACCESS(B_imm);
+	DEFINE_INSTR_FIELD_ACCESS(rs1);
+	DEFINE_INSTR_FIELD_ACCESS(rs2);
+	DEFINE_INSTR_FIELD_ACCESS(rd);
+	DEFINE_INSTR_FIELD_ACCESS(shamt);
+	
+	auto maybe_mutate_load_addr(uint32_t addr) {
+		mutator->mutate_load_addr(op, addr);
+		return addr;
+	}
+	
+	auto maybe_mutate_load_value(uint32_t addr, int32_t value) {
+		mutator->mutate_load_value(op, addr, value);
+		return value;
+	}
+	
+	void maybe_mutate_store_access(uint32_t &addr, uint32_t &value) {
+		mutator->mutate_store_access(op, addr, value);
+	}
+	
 
 	void exec_step();
 
