@@ -1,0 +1,113 @@
+read register
+write register
+read immediate
+perform function
+ - designated: i.e. the real ADD
+ - supportive: i.e. use + in load/store branch/jump instruction as helper function
+   -> +, &
+   
+every of the above operations can be mutated accordingly.
+
+
+can add a load/store mutator by placing a MutatorMemoryInterface between ISS and Executor.
+
+
+
+Generic ISS mutations: read/write reg and read immediate
+
+Specific ISS mutations:
+
+	ADD: [M1, M2],
+	SUB: [M3, M4],
+	etc.
+	
+	
+struct ExecMutator {
+	bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) {
+		
+	}
+};
+	
+	
+struct instr_mutator_if {
+	virtual bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) = 0;
+}
+
+template <Opcode::Mapping TargetOp, typename Impl>
+struct OperationMutation : instr_mutator_if {
+	//Opcode::Mapping target_op;
+	
+	//virtual void apply(ISS &core, RegFile &regs, Instruction &instr) = 0;
+	
+	bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) override {
+		if (op == TargetOp) {
+			static_cast<Impl*>(this)->apply(core, regs, instr);
+			//apply(core, regs, instr);
+			return true;
+		}
+		return false;
+	}
+};
+
+
+
+#define InstrMutation(OPCODE, NAME)		\
+	struct ADD_Mutation1
+	
+struct ADD_Mutation1 : instr_mutator_if {
+	bool exec(Opcode::Mapping op, ISS &core, RegFile &regs, Instruction &instr) override {
+		if (op != Opcode::ADD)
+			return false;
+		regs[instr.rd()] = regs[instr.rs1()] - regs[instr.rs2()];
+		return true;
+	}
+};
+
+
+	
+
+struct ADD_Mutation1 : OperationMutation<Opcode::ADD, Add_Mutation1> {
+	void apply(ISS &core, RegFile &regs, Instruction &instr) override {
+		regs[instr.rd()] = regs[instr.rs1()] - regs[instr.rs2()];
+	}
+};
+
+struct ADD_Mutation2 : OperationMutation {
+	ADD_Mutation3() : OperationMutation(Opcode::ADD) {}
+	
+	void apply(ISS &core, RegFile &regs, Instruction &instr) override {
+		regs[instr.rd()] = regs[instr.rs1()] + regs[instr.rs2()] + 1;
+	}
+};
+
+struct ADD_Mutation3 : OperationMutation {
+	ADD_Mutation3() : OperationMutation(Opcode::ADD) {}
+
+	void apply(ISS &core, RegFile &regs, Instruction &instr) override {
+		regs[instr.rd()] = (regs[instr.rs1()] + regs[instr.rs2()]) & ((1 << 30) - 1);
+	}
+};
+
+
+
+
+int32_t read_reg(int32_t val, unsigned idx) {
+	// mutate val after reading
+	return val;
+}
+
+int32_t write_reg(int32_t val, unsigned idx) {
+	// mutate val before writing
+	return val;
+}
+
+// optionally pass an immediate type as argument instead of using different functions for each immediate
+int32_t read_I_imm(int32_t val) {
+	// mutate immediate before reading
+	return val;
+}
+
+
+int32_t op_ADD(int32_t a, int32_t b) {
+	
+}

@@ -1,0 +1,61 @@
+Same load from same address yields same result
+ -> use different address parts
+
+		@assume R[rs1]+off1 == R[rs2]+off2
+		lX rd, rs1, off1 == lX rd, rs2, off2
+		
+
+The same value that is stored is also loaded (unsigned load)
+
+		@assume R[rs1]+off is properly aligned
+		sw rs2, rs1, off == lw rd, rs1, off		{ R[rd] == R[rs2] }
+		sh rs2, rs1, off == lhu rd, rs1, off	{ R[rd] == R[rs2] }
+		sb rs2, rs1, off == lbu rd, rs1, off	{ R[rd] == R[rs2] }
+		
+		
+LW can be emulated with two LHU
+(similarly, LHU can be emulated with two LBU)
+
+	LW(rs1+off) == LHU(rs1+off) | (LHU(rs1+off+2) << 16)
+	
+	LHU(rs1+off) == LBU(rs1+off) | (LBU(rs1+off+1) << 8)
+	
+	
+
+Sign/Zero extension	works correctly
+
+		lhu rd, rs1, off
+		mv rx, rd
+		slli rx, rx, 16
+		srli rx, rx, 16
+		{ R[rd] == R[rx] }
+		
+		lh rd, rs1, off
+		mv rx, rd
+		slli rx, rx, 16
+		srai rx, rx, 16
+		{ R[rd] == R[rx] }
+		
+		use 24 bit shift for LBU and LB, respectively
+		
+		
+
+
+Compare signed/unsigned load with same width:
+
+		lbu rd, rs1, off ==
+		lb rx, rs1, off
+		slli ry, rx, 24
+		srli ry, ry, 24
+		{ R[rd] *<= R[rx]; R[rd] == R[ry] }		
+
+
+
+
+SW works correctly (use SW as baseline, since it has register width, which is basically the simplest check).
+	
+		sw rs2, rs1, 0 => addr == R[rs1] /\ val == R[rs2]
+		
+		Baseline for correct implementation (otherwise we cannot ensure that address/value is not
+		modified by all load/store instructions in some consistent way, e.g. apply XOR on the
+		value before/after store/load).
