@@ -118,3 +118,26 @@ struct ADD_Change : public test_rule_if {
     void randomize(Random &random);
     void run(Executor &x);
 };
+struct SLLI_Meta1 : public test_rule_if {
+    unsigned rs1, rd1, rd2;
+    uint32_t a, b;
+    std::string to_string() override;
+    void randomize(Random &random);
+    void run(Executor &x);
+};
+struct SRLI_Meta1 : public test_rule_if {
+    unsigned rs1, rd1, rd2;
+    uint32_t a, b;
+    std::string to_string() override;
+    void randomize(Random &random);
+    void run(Executor &x);
+};
+struct XOR_Meta1 : public test_rule_if {
+    unsigned rd1, rd2, rs1;
+    uint32_t a, b, c;
+    std::string to_string() override;
+    void randomize(Random &random);
+    void run(Executor &x);
+};
+
+

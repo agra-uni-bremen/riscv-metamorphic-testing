@@ -14,9 +14,9 @@ void ADD_Mutation3::apply(ISS &core) {
 }
 std::vector<std::shared_ptr<exec_mutator_if>> mutators {
     std::make_shared<EmptyMutation>(),
-    std::make_shared<ADD_Mutation1>(),
-    std::make_shared<ADD_Mutation2>(),
-    std::make_shared<ADD_Mutation3>(),
+    //std::make_shared<ADD_Mutation1>(),
+    //std::make_shared<ADD_Mutation2>(),
+    //std::make_shared<ADD_Mutation3>(),
 };
 std::vector<std::shared_ptr<exec_mutator_if>> get_mutators() {
     return mutators;

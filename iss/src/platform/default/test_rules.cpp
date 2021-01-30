@@ -520,10 +520,110 @@ void ADD_Change::run(Executor &x) {
         x.check(x.get_reg(rd) != x.get_reg(rs1));
     }
 }
+
+/* SLLI_Change */
+std::string SLLI_Meta1::to_string() {
+    std::ostringstream ss;
+    ss << "SLLI_Meta1(\n"
+       << "    rs1 = " << rs1 << "\n"
+       << "    rd1 = " << rd1 << "\n"
+       << "    rd2 = " << rd2 << "\n"
+       << "    a = " << a << "\n"
+       << "    b = " << b << "\n"
+       << ")";
+    return ss.str();
+}
+void SLLI_Meta1::randomize(Random &random) {
+    rs1 = random.unique_reg({zero});
+    rd1 = random.unique_reg({zero, rs1});
+    rd2 = random.unique_reg({zero, rs1, rd1});
+    a = random.reg_val();
+    b = random.reg_val();
+}
+/* x << (s + 1) == x << s << 1 */
+void SLLI_Meta1::run(Executor &x) {
+    // A shift further than the width of the type being shifted is undefined.
+    a %= 31; 
+    x.code.ADDI(rs1, zero, b);
+    x.code.SLLI(rd1, rs1, a + 1);
+    x.code.SLLI(rd2, rs1, a);
+    x.code.SLLI(rd2, rd2, 1);
+    x.run();
+    x.check(x.get_reg(rd1) == x.get_reg(rd2));
+}
+
+/* SRLI_Change */
+std::string SRLI_Meta1::to_string() {
+    std::ostringstream ss;
+    ss << "SRLI_Meta1(\n"
+       << "    rs1 = " << rs1 << "\n"
+       << "    rd1 = " << rd1 << "\n"
+       << "    rd2 = " << rd2 << "\n"
+       << "    a = " << a << "\n"
+       << "    b = " << b << "\n"
+       << ")";
+    return ss.str();
+}
+void SRLI_Meta1::randomize(Random &random) {
+    rs1 = random.unique_reg({zero});
+    rd1 = random.unique_reg({zero, rs1});
+    rd2 = random.unique_reg({zero, rs1, rd1});
+    a = random.reg_val();
+    b = random.reg_val();
+}
+/* x >> (s + 1) == x >> s >> 1 */
+void SRLI_Meta1::run(Executor &x) {
+    a %= 31; // A shift further than the width of the type being shifted is undefined.
+    x.code.ADDI(rs1, zero, b);
+    x.code.SRLI(rd1, rs1, a + 1);
+    x.code.SRLI(rd2, rs1, a);
+    x.code.SRLI(rd2, rd2, 1);
+    x.run();
+    x.check(x.get_reg(rd1) == x.get_reg(rd2));
+}
+
+/* XOR_Meta1 */
+std::string XOR_Meta1::to_string() {
+    std::ostringstream ss;
+    ss << "XOR_Meta1(\n"
+       << "    rd1 = " << rd1 << "\n"
+       << "    rd2 = " << rd2 << "\n"
+       << "    rs1 = " << rs1 << "\n"
+       << "    a = " << a << "\n"
+       << "    b = " << b << "\n"
+       << "    c = " << c << "\n"
+       << ")";
+    return ss.str();
+}
+void XOR_Meta1::randomize(Random &random) {
+    rd1 = random.unique_reg({zero});
+    rd2 = random.unique_reg({zero, rd1});
+    rs1 = random.unique_reg({zero, rd1, rd2});
+    a = random.reg_val();
+    b = random.reg_val();
+    c = random.reg_val();
+}
+void XOR_Meta1::run(Executor &x) {
+    x.code.ADDI(rs1, zero, b);
+    x.code.ANDI(rd1, rs1, c);
+    x.code.XORI(rd1, rd1, a);
+    x.code.ADDI(rs1, zero, b);
+    x.code.ANDI(rd2, rs1, ~c);
+    x.code.XOR(rd1, rd1, rd2);
+    x.code.ADDI(rs1, zero, a);
+    x.code.XORI(rd2, rs1, b);
+    x.run();
+    x.check(x.get_reg(rd1) == x.get_reg(rd2));
+}
+
+/****************************************************************************/
 std::vector<std::shared_ptr<test_rule_if>> rules{
     std::make_shared<ADD_Comm>(),
     std::make_shared<ADD_Split>(),
     std::make_shared<ADD_Change>(),
+    std::make_shared<SLLI_Meta1>(),
+    std::make_shared<SRLI_Meta1>(),
+    std::make_shared<XOR_Meta1>(),
     std::make_shared<ADD_Assoc>(),
     std::make_shared<ADD_Split2>(),
     std::make_shared<LX_AddrId<LoadInstr::LB>>(),
