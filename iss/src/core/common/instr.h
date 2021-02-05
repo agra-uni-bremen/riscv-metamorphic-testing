@@ -7,6 +7,11 @@
 
 #include "core_defs.h"
 
+#define S_MASK 0x1f
+//#define J_MASK 
+#define I_MASK 0xfff
+#define SHIFT_MASK 0x3f
+
 namespace Opcode {
 // opcode masks used to decode an instruction
 enum Parts {
