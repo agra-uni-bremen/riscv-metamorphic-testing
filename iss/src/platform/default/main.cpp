@@ -1,6 +1,8 @@
 #include "executor.h"
 #include "mutations.h"
-#include "test_rules.h"
+#include "tests.h"
+#include "common.h"
+#include <vector>
 
 int main(int argc, char **argv) {
     constexpr unsigned max_iterations_per_mutant = 100000;
@@ -10,7 +12,7 @@ int main(int argc, char **argv) {
     RandomLazyMemory mem(random);
     Executor exec(core, random, mem);
     core.randomize_state();
-    // core.trace = true;
+    core.trace = false;
     auto mutators = get_mutators();
     for (auto m : mutators) {
         std::cout << "> check mutator: " << m->name() << std::endl;
@@ -20,11 +22,12 @@ int main(int argc, char **argv) {
         try {
             for (i = 0; i < max_iterations_per_mutant; ++i) {
                 rule = random_rule(random);
-                rule->randomize(random);
-                rule->run(exec);
+                rule->run(exec, random);
             }
-        } catch (RuleCheckFailed &e) {
+        } catch (const RuleCheckFailed &e) {
             killed_mutations.push_back({m, rule->to_string(), i + 1});
+        } catch (const TraceableException &e) {
+            std::cout << "Exception during test run: " << e.what();
         }
     }
     std::cout << std::endl;

@@ -45,3 +45,12 @@ unsigned Random::unique_reg(std::initializer_list<unsigned> xs) {
     }
     return ans;
 }
+#include <vector>
+unsigned Random::unique_reg(std::vector<unsigned> xs) {
+    assert(xs.size() < 32);
+    unsigned ans = reg();
+    while (std::any_of(xs.begin(), xs.end(), [ans](unsigned i) { return i == ans; })) {
+        ans = (ans + 1) % 32;
+    }
+    return ans;
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdlib>
 #include <unordered_map>
+#include <vector>
 
 struct Random {
     unsigned operator()(unsigned n);
@@ -15,4 +16,5 @@ struct Random {
     unsigned reg();
     unsigned non_zero_reg();
     unsigned unique_reg(std::initializer_list<unsigned> xs);
+    unsigned unique_reg(std::vector<unsigned> xs);
 };

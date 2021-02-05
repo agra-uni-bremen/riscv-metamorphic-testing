@@ -1,6 +1,7 @@
 #pragma once
-#include "test_rules.h"
+#include "tests.h"
 
+/* Common */
 struct EmptyMutation : exec_mutator_if {
     bool exec(Opcode::Mapping op, ISS &core) override { return false; }
     void mutate_read_reg(Opcode::Mapping op, unsigned idx, int32_t &value) override {}
@@ -52,9 +53,8 @@ template <Opcode::Mapping TargetOp, typename Impl>
 std::string OperationMutation<TargetOp, Impl>::name() {
     return _name;
 }
-/****************************/
-/* Mutation Implementations */
-/****************************/
+
+/* Mutations */
 struct ADD_Mutation1 : OperationMutation<Opcode::ADD, ADD_Mutation1> {
     ADD_Mutation1() : OperationMutation<Opcode::ADD, ADD_Mutation1>("Add Mutation 1") {}
     void apply(ISS &core);
