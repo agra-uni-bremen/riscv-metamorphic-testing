@@ -32,6 +32,7 @@ struct KilledMutation {
 template <Opcode::Mapping TargetOp, typename Impl>
 struct OperationMutation : EmptyMutation {
     std::string _name;
+    // TODO: One could obtain the class name in the same way that the test cases currently do.
     OperationMutation(std::string name);
     bool exec(Opcode::Mapping op, ISS &core);
     void apply(ISS &core);
@@ -54,16 +55,3 @@ std::string OperationMutation<TargetOp, Impl>::name() {
     return _name;
 }
 
-/* Mutations */
-struct ADD_Mutation1 : OperationMutation<Opcode::ADD, ADD_Mutation1> {
-    ADD_Mutation1() : OperationMutation<Opcode::ADD, ADD_Mutation1>("Add Mutation 1") {}
-    void apply(ISS &core);
-};
-struct ADD_Mutation2 : OperationMutation<Opcode::ADD, ADD_Mutation2> {
-    ADD_Mutation2() : OperationMutation<Opcode::ADD, ADD_Mutation2>("Add Mutation 2") {}
-    void apply(ISS &core);
-};
-struct ADD_Mutation3 : OperationMutation<Opcode::ADD, ADD_Mutation3> {
-    ADD_Mutation3() : OperationMutation<Opcode::ADD, ADD_Mutation3>("Add Mutation 3") {}
-    void apply(ISS &core);
-};

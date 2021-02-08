@@ -35,11 +35,17 @@ int main(int argc, char **argv) {
     std::cout << std::endl;
     for (unsigned k = 0; k < killed_mutations.size(); ++k) {
         auto &e = killed_mutations[k];
-        std::cout << "[" << k + 1 << "] killed mutation: " << e.mutator->name()
-                  << ", by rule: " << e.kill_test << " after "
-                  << e.num_iterations << " iterations\n"
-                  << std::endl;
+        std::cout << "[" << k + 1 << "] killed mutation '" << e.mutator->name() << "' "
+                  << "with rule '" << e.kill_test << "' after " 
+                  << e.num_iterations << " iterations." << std::endl;
     }
+    for (auto m : mutators) {
+        auto test = [m](auto k) { return m->name() == k.mutator->name(); };
+        if (std::find_if(killed_mutations.begin(), killed_mutations.end(), test) == killed_mutations.end()) {
+            std::cout << "Unkilled mutation '" << m->name() << "'." << std::endl;
+        }
+    }
+    std::cout << std::endl;
     std::cout << "total killed mutations: " << killed_mutations.size() << " / " << mutators.size() << std::endl;
     return 0;
 }

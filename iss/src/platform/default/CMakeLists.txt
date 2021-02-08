@@ -10,5 +10,5 @@ add_executable(mt-iss
 		tests.cpp
 	    ${HEADERS})
 
-target_link_libraries(mt-iss dl rv32 ${Boost_LIBRARIES})
+target_link_libraries(mt-iss dl rv32 gcov ${Boost_LIBRARIES})
 INSTALL(TARGETS mt-iss RUNTIME DESTINATION bin)

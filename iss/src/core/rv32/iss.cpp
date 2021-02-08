@@ -182,6 +182,7 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::SLL:
+			// TODO: Is it correct that this uses signed while SRL uses unsigned?
 			write_reg(rd(), read_reg(rs1()) << regs.shamt(rs2()));
 			break;
 
@@ -190,7 +191,6 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::SLTU:
-			//printf("SLTU: %X %X\n", (uint32_t)read_reg(rs1()), (uint32_t)read_reg(rs2()));
 			write_reg(rd(), ((uint32_t)read_reg(rs1())) < ((uint32_t)read_reg(rs2())));
 			break;
 
@@ -219,7 +219,6 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::SRLI:
-			//printf("SRLI: %d %X %d\n", rs1(), (uint32_t)read_reg(rs1()), shamt());
 			write_reg(rd(), ((uint32_t)read_reg(rs1())) >> shamt());
 			break;
 
@@ -232,7 +231,6 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::AUIPC:
-			//printf("AUIPC: %X\n", last_pc);
 			write_reg(rd(), last_pc + U_imm());
 			break;
 
