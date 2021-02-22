@@ -293,7 +293,8 @@ struct ISS : public external_interrupt_target, public clint_interrupt_target, pu
 	}
 
 	inline void trap_check_pc_alignment() {
-		assert(!(pc & 0x1) && "not possible due to immediate formats and jump execution");
+		//TODO: revert this.
+		//assert(!(pc & 0x1) && "not possible due to immediate formats and jump execution");
 
 		if (unlikely((pc & 0x3) && (!csrs.misa.has_C_extension()))) {
 			// NOTE: misaligned instruction address not possible on machines supporting compressed instructions

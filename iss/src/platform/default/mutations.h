@@ -44,7 +44,9 @@ OperationMutation<TargetOp, Impl>::OperationMutation(std::string name) {
 }
 template <Opcode::Mapping TargetOp, typename Impl>
 bool OperationMutation<TargetOp, Impl>::exec(Opcode::Mapping op, ISS &core) {
+    //printf("exec %d %d %d\n", Opcode::Mapping::ADD , TargetOp, op);
     if (op == TargetOp) {
+        //printf("XXX\n");
         static_cast<Impl *>(this)->apply(core);
         return true;
     }

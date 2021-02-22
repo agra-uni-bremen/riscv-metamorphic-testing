@@ -40,4 +40,5 @@ struct DefaultLoadStoreMemoryInterface : public EmptyMemoryInterface {
     void store_word(uint64_t addr, uint32_t value);
     void store_half(uint64_t addr, uint16_t value);
     void store_byte(uint64_t addr, uint8_t value);
+    void atomic_unlock() override;
 };

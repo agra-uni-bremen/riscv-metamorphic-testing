@@ -86,7 +86,8 @@ ISS::ISS(uint32_t hart_id, bool use_E_base_isa) {
 }
 
 void ISS::exec_step() {
-	assert(((pc & ~pc_alignment_mask()) == 0) && "misaligned instruction");
+	// TODO: revert this
+	//assert(((pc & ~pc_alignment_mask()) == 0) && "misaligned instruction");
 
 	try {
 		uint32_t mem_word = instr_mem->load_instr(pc);
@@ -154,6 +155,7 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::SLTI:
+			//printf("%d %d\n", read_reg(rs1()), I_imm());
 			write_reg(rd(), read_reg(rs1()) < I_imm());
 			break;
 
@@ -231,6 +233,7 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::AUIPC:
+			//printf("U: %x\n", U_imm());
 			write_reg(rd(), last_pc + U_imm());
 			break;
 

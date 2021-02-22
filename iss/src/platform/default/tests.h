@@ -17,6 +17,8 @@
 #define ATTRIBUTE(NAME, CODE) add_attribute(#NAME, NAME = CODE);
 // Add mutually exclusive registers to a test case, excluding x0/zero.
 #define REGISTERS(r, ...) add_regs(r, #__VA_ARGS__, {__VA_ARGS__});
+#define I_MASK 0xfff
+#define SHAMT_MASK 0x1f
 
 struct test_rule_if {
     typedef boost::tuple<std::string, boost::any> attr;

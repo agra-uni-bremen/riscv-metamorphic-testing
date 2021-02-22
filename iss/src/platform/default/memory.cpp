@@ -53,7 +53,7 @@ bool EmptyMemoryInterface::atomic_store_conditional_word(uint64_t addr, uint32_t
     throw TraceableException("Not implemented.");
 }
 void EmptyMemoryInterface::atomic_unlock() {
-    //throw TraceableException("Not implemented.");
+    throw TraceableException("Not implemented.");
 }
 DefaultLoadStoreMemoryInterface::DefaultLoadStoreMemoryInterface(RandomLazyMemory &mem) : mem(mem) {}
 int32_t DefaultLoadStoreMemoryInterface::load_word(uint64_t addr) {
@@ -91,4 +91,6 @@ void DefaultLoadStoreMemoryInterface::store_half(uint64_t addr, uint16_t value) 
 }
 void DefaultLoadStoreMemoryInterface::store_byte(uint64_t addr, uint8_t value) {
     mem.set_byte(addr, value);
+}
+void DefaultLoadStoreMemoryInterface::atomic_unlock() {
 }

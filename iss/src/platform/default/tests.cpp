@@ -477,6 +477,39 @@ struct SRL_Meta2 : public test_rule_if {
         x.check((x.get_reg(rd2) == 0) || x.get_reg(rd3));
     }
 };
+/* Shift to the right erases sign bit. */
+struct SRL_1 : public test_rule_if {
+    unsigned rs1, rs2, rd;
+    uint32_t i, shamt;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd, &rs1, &rs2);
+        ATTRIBUTE(i, r.i_imm());
+        ATTRIBUTE(shamt, r(SHAMT_MASK));
+
+        x.code.LI(rs1, i);
+        x.code.LI(rs2, shamt);
+        x.code.SRL(rd, rs1, rs2);
+        x.run();
+
+        x.check(!(shamt > 0) || ((int)x.get_reg(rd) >= 0));
+    }
+};
+/* Shift by zero leaves the operand unchanged. */
+struct SRL_2 : public test_rule_if {
+    unsigned rs1, rs2, rd;
+    uint32_t i, shamt;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd, &rs1, &rs2);
+        ATTRIBUTE(i, r.i_imm());
+
+        x.code.LI(rs1, i);
+        x.code.LI(rs2, 0);
+        x.code.SRL(rd, rs1, rs2);
+        x.run();
+
+        x.check(x.get_reg(rd) == i);
+    }
+};
 /* x >> (s + 1) == x >> s >> 1 */
 struct SRLI_Meta1 : public test_rule_if {
     unsigned rs1, rd1, rd2;
@@ -802,7 +835,7 @@ struct SRA_preserves_sign : public test_rule_if {
     uint32_t i;
     void run(Executor &x, Random &r) {
         REGISTERS(r, &rd, &rs1, &rs2);
-        ATTRIBUTE(i, r.i_imm() && 0xffff);
+        ATTRIBUTE(i, r.i_imm() & 0xffff);
 
         // TODO: Zero has no sign bit. Should it? Some architectures do.
         if (i == 0) {
@@ -813,6 +846,38 @@ struct SRA_preserves_sign : public test_rule_if {
         x.code.SRA(rd, rs1, rs2);
         x.run();
         x.check(x.get_reg(rd) & (1 << 31));
+    }
+};
+/* Arithmetic shift by zero leaves operand unchanged. */
+struct SRA_Zero : public test_rule_if {
+    unsigned rd, rs1, rs2;
+    uint32_t i;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd, &rs1, &rs2);
+        ATTRIBUTE(i, r.i_imm());
+
+        x.code.LI(rs1, i);
+        x.code.LI(rs2, 0);
+        x.code.SRA(rd, rs1, rs2);
+        x.run();
+        x.check(x.get_reg(rd) == i);
+    }
+};
+/* |x >> s| <= |x|*/
+struct SRA_1 : public test_rule_if {
+    unsigned rd, rs1, rs2;
+    uint32_t shamt;
+    int32_t i;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd, &rs1, &rs2);
+        ATTRIBUTE(i, r.i_imm());
+        ATTRIBUTE(shamt, r(SHAMT_MASK));
+
+        x.code.LI(rs1, i);
+        x.code.LI(rs2, shamt);
+        x.code.SRA(rd, rs1, rs2);
+        x.run();
+        x.check(abs((int32_t)x.get_reg(rd)) <= abs(i));
     }
 };
 /* SRAI adds ones for negative values. */
@@ -877,6 +942,42 @@ struct Branch_Exclusive1 : public test_rule_if {
         x.code.JAL(rd2, 0);
         x.run();
         x.check(x.get_reg(rd2) == x.get_reg(rd1) + 4);
+    }
+};
+/* BGEU is antisymmetric. */
+struct BGEU_Antisymmetry : public test_rule_if {
+    unsigned rd1, rd2, rs1, rs2;
+    uint32_t i1, i2, i3;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd1, &rd2, &rs1, &rs2);
+        ATTRIBUTE(i1, r.i_imm());
+        ATTRIBUTE(i2, r.i_imm());
+        ATTRIBUTE(i3, r.b_imm() & 0xfff);
+
+        if (i3 == 4) {
+            return;
+        }
+
+        x.code.LI(rs1, i1);
+        x.code.LI(rs2, i2);
+        x.code.JAL(rd1, 0);
+        x.code.BGEU(rs1, rs2, i3);
+        x.code.JAL(rd2, 0);
+        x.run();
+        bool b1 = x.get_reg(rd2) == x.get_reg(rd1) + i3;
+
+        x.code.LI(rs1, i2);
+        x.code.LI(rs2, i1);
+        x.code.JAL(rd1, 0);
+        x.code.BGEU(rs1, rs2, i3);
+        x.code.JAL(rd2, 0);
+        x.run();
+        bool b2 = x.get_reg(rd2) == x.get_reg(rd1) + i3;
+
+        // (i1 >= i2) => Branch taken.
+        x.check(!(b1 && b2) || i1 == i2);
+        x.check(!(i1 >= i2) || b1);
+        x.check(!(i1 < i2) || b2);
     }
 };
 /* BEQ/BGE(U) and BNE, BLT, BLTU are mutually exclusive. */
@@ -1007,8 +1108,65 @@ struct BLT_Meta1 : public test_rule_if {
         x.check(bltu1 != bltu2);
     }
 };
+/* i1 < i2 => branch */
+struct BLTU_1 : public test_rule_if {
+    unsigned rd1, rd2, rs1, rs2;
+    uint32_t i1, i2, off;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd1, &rd2, &rs1, &rs2);
+        ATTRIBUTE(i1, r.i_imm());
+        ATTRIBUTE(i2, r.i_imm());
+        ATTRIBUTE(off, r.b_imm() & 0xfff);  // Only allow positive offsets.
+
+        if (i1 == i2 || off == 4) {
+            return;
+        }
+
+        x.code.LI(rs1, i1);
+        x.code.LI(rs2, i2);
+        x.code.JAL(rd1, 0);
+        x.code.BLTU(rs1, rs2, off);
+        x.code.JAL(rd2, 0);
+        x.run();
+
+        bool b = x.get_reg(rd2) == x.get_reg(rd1) + off;
+        x.check(!(i1 < i2) || b);
+    }
+};
 /* If a,b have different signs and neither is zero: 
-   abs(a + b) < abs(a) + abs(b) (triangle inequality) */
+   abs(a + b) < abs(a) + abs(b) (triangle inequality) 
+*/
+struct BLT_Asymmetry : public test_rule_if {
+    unsigned rd1, rd2, rs1, rs2;
+    int32_t i1, i2, off;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd1, &rd2, &rs1, &rs2);
+        ATTRIBUTE(i1, r.i_imm());
+        ATTRIBUTE(i2, r.i_imm());
+        ATTRIBUTE(off, r.b_imm() & 0xfff);  // Only allow positive offsets.
+
+        if (off == 4) {
+            return;
+        }
+
+        x.code.LI(rs1, i1);
+        x.code.LI(rs2, i2);
+        x.code.JAL(rd1, 0);
+        x.code.BLT(rs1, rs2, off);
+        x.code.JAL(rd2, 0);
+        x.run();
+        bool b1 = x.get_reg(rd2) == x.get_reg(rd1) + off;
+
+        x.code.JAL(rd1, 0);
+        x.code.BLT(rs2, rs1, off);
+        x.code.JAL(rd2, 0);
+        x.run();
+        bool b2 = x.get_reg(rd2) == x.get_reg(rd1) + off;
+
+        x.check(!b1 || !b2);  // Asymmetry: b1 => !b2
+    }
+};
+/* Triangle inequality. */
 struct BLT_Triangle : public test_rule_if {
     unsigned rd1, rd2, rs1, rs2;
     int32_t i1, i2, off;
@@ -1018,22 +1176,17 @@ struct BLT_Triangle : public test_rule_if {
         ATTRIBUTE(i2, r.i_imm());
         ATTRIBUTE(off, r.b_imm() & 0xfff);  // Only allow positive offsets.
 
-        if ((i1 < 0) == (i2 < 0)) {
-            return;
-        }
-        if (off == 4 || i1 == 0 || i2 == 0) {
-            return;
-        }
-
+        if (off == 4) return;
+        // TODO: implement abs with << 1, >> 1?
         x.code.LI(rs1, abs(i1 + i2));
         x.code.LI(rs2, abs(i1) + abs(i2));
         x.code.JAL(rd1, 0);
         x.code.BLT(rs1, rs2, off);
         x.code.JAL(rd2, 0);
         x.run();
-        //printf("BLT2: %X %X\n", i1, i2);
+        bool b = x.get_reg(rd2) == x.get_reg(rd1) + off;
 
-        x.check(x.get_reg(rd2) == x.get_reg(rd1) + off);
+        x.check(!(i1 < 0 && i2 > 0) || b);
     }
 };
 /* abs(a) + abs(b) >= abs(a + b) (triangle inequality) */
@@ -1050,11 +1203,12 @@ struct BGE_Triangle : public test_rule_if {
 
         x.code.LI(rs1, abs(i1) + abs(i2));
         x.code.LI(rs2, abs(i1 + i2));
-        x.code.JAL(rd1, 0);
+        x.code.JAL(rd1, 0);  // Save PC before.
         x.code.BGE(rs1, rs2, off);
-        x.code.JAL(rd2, 0);
+        x.code.JAL(rd2, 0);  // Save PC after.
         x.run();
 
+        // Branch was taken?
         x.check(x.get_reg(rd2) == x.get_reg(rd1) + off);
     }
 };
@@ -1149,22 +1303,20 @@ struct BGE_SLT_Equiv : public test_rule_if {
 };
 /* Data written with SB can be read back with load. */
 struct SB_Store_Load : public test_rule_if {
-    unsigned rd, rs1, rs2;
-    uint32_t addr, val, off;
+    unsigned rs1, rs2, rd;
+    uint32_t addr;
+    int32_t val;
     void run(Executor &x, Random &r) {
-        ATTRIBUTE(rs1, r.unique_reg({zero}));
-        ATTRIBUTE(rs2, r.unique_reg({zero, rs1}));
-        ATTRIBUTE(rd, r.unique_reg({zero, rs1, rs2}));
+        REGISTERS(r, &rs1, &rs2, &rd);
         ATTRIBUTE(addr, r.s_imm());
-        ATTRIBUTE(off, r.s_imm());
-        ATTRIBUTE(val, r.reg_val() & 0xff);
+        ATTRIBUTE(val, (r.s_imm() << 24) >> 24);
 
-        x.code.LI(rs1, addr);
         x.code.LI(rs2, val);
-        x.code.SB(rs2, rs1, off);
-        x.code.LB(rd, rs1, off);
+        x.code.LI(rs1, addr);
+        x.code.SB(rs2, rs1, 0);
+        x.code.LB(rd, rs1, 0);
         x.run();
-        x.check((x.get_reg(rd) & 0xff) == x.get_reg(rs2));
+        x.check(val == (int32_t)x.get_reg(rd));
     }
 };
 /* Data written with SH can be read back with load. */
@@ -1172,11 +1324,9 @@ struct SH_Store_Load : public test_rule_if {
     unsigned rd, rs1, rs2;
     uint32_t addr, val, off;
     void run(Executor &x, Random &r) {
-        ATTRIBUTE(rs1, r.unique_reg({zero}));
-        ATTRIBUTE(rs2, r.unique_reg({zero, rs1}));
-        ATTRIBUTE(rd, r.unique_reg({zero, rs1, rs2}));
-        ATTRIBUTE(addr, r.s_imm());
-        ATTRIBUTE(off, r.s_imm());
+        REGISTERS(r, &rs1, &rs2, &rd);
+        ATTRIBUTE(addr, align_memory_addr<2>(r.s_imm()));
+        ATTRIBUTE(off, align_memory_addr<2>(r.s_imm() & 0xff));
         ATTRIBUTE(val, r.reg_val() & 0xff);
 
         x.code.LI(rs1, addr);
@@ -1184,7 +1334,52 @@ struct SH_Store_Load : public test_rule_if {
         x.code.SH(rs2, rs1, off);
         x.code.LH(rd, rs1, off);
         x.run();
-        x.check((x.get_reg(rd) & 0xff) == x.get_reg(rs2));
+        x.check((x.get_reg(rd) & 0xff) == val);
+    }
+};
+/* Adjacent memory remains unchanged. */
+struct SH_Adjacent : public test_rule_if {
+    unsigned rd1, rd2, rd3, rs1, rs2;
+    uint32_t addr, val, off;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rs1, &rs2, &rd1, &rd2, &rd3);
+        ATTRIBUTE(addr, align_memory_addr<2>(r.s_imm()));
+        ATTRIBUTE(off, align_memory_addr<2>(r.s_imm() & 0xff));
+        ATTRIBUTE(val, r.reg_val() & 0xff);
+
+        x.code.LI(rs1, addr);
+        x.code.LI(rs2, val);
+        x.code.LH(rd1, rs1, off + 2);
+        x.code.SH(rs2, rs1, off);
+        x.code.LH(rd2, rs1, off);
+        x.code.LH(rd3, rs1, off + 2);
+        x.run();
+
+        x.check(x.get_reg(rd2) == x.get_reg(rs2));
+        x.check(x.get_reg(rd1) == x.get_reg(rd3));
+    }
+};
+/* Adjacent memory remains unchanged. */
+struct SB_Adjacent : public test_rule_if {
+    unsigned rd1, rd2, rd3, rs1, rs2;
+    uint32_t addr, off;
+    int32_t val;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rs1, &rs2, &rd1, &rd2, &rd3);
+        ATTRIBUTE(addr, r.s_imm());
+        ATTRIBUTE(off, r.s_imm());
+        ATTRIBUTE(val, ((int32_t)r.reg_val() << 24) >> 24);  // sign extend
+
+        x.code.LI(rs1, addr);
+        x.code.LI(rs2, val);
+        x.code.LB(rd1, rs1, off + 1);
+        x.code.SB(rs2, rs1, off);
+        x.code.LB(rd2, rs1, off);
+        x.code.LB(rd3, rs1, off + 1);
+        x.run();
+
+        x.check((int32_t)x.get_reg(rd2) == val);
+        x.check(x.get_reg(rd1) == x.get_reg(rd3));
     }
 };
 /* LW(rs1+off) == LHU(rs1+off) | (LHU(rs1+off+2) << 16) */
@@ -1217,11 +1412,7 @@ struct LH_LB_Equiv : public test_rule_if {
     unsigned rs1, rs2, rd, rd1, rd2;
     uint32_t addr, val;
     void run(Executor &x, Random &r) {
-        ATTRIBUTE(rs1, r.unique_reg({zero}));
-        ATTRIBUTE(rs2, r.unique_reg({zero, rs1}));
-        ATTRIBUTE(rd, r.unique_reg({zero, rs1, rs2}));
-        ATTRIBUTE(rd1, r.unique_reg({zero, rs1, rs2, rd}));
-        ATTRIBUTE(rd2, r.unique_reg({zero, rs1, rs2, rd1}));
+        REGISTERS(r, &rs1, &rs2, &rd, &rd1, &rd2);
         ATTRIBUTE(addr, align_memory_addr<2>(r.s_imm()));
         ATTRIBUTE(val, r.s_imm());
 
@@ -1240,14 +1431,10 @@ struct LH_LB_Equiv : public test_rule_if {
 };
 /* Two LBU are equivalent to one LHU */
 struct LHU_LBU_Equiv : public test_rule_if {
-    unsigned rs1, rs2, rd, rd1, rd2;
+    unsigned rs1, rs2, rd1, rd2;
     uint32_t addr, val;
     void run(Executor &x, Random &r) {
-        ATTRIBUTE(rs1, r.unique_reg({zero}));
-        ATTRIBUTE(rs2, r.unique_reg({zero, rs1}));
-        ATTRIBUTE(rd, r.unique_reg({zero, rs1, rs2}));
-        ATTRIBUTE(rd1, r.unique_reg({zero, rs1, rs2, rd}));
-        ATTRIBUTE(rd2, r.unique_reg({zero, rs1, rs2, rd1}));
+        REGISTERS(r, &rd1, &rd2, &rs1, &rs2);
         ATTRIBUTE(addr, align_memory_addr<2>(r.s_imm()));
         ATTRIBUTE(val, r.s_imm());
 
@@ -1266,14 +1453,10 @@ struct LHU_LBU_Equiv : public test_rule_if {
 };
 /* Compare signed/unsigned load with same width. */
 struct LH_LHU_Equiv : public test_rule_if {
-    unsigned rs1, rs2, rd, rd1, rd2;
+    unsigned rs1, rs2, rd1, rd2;
     uint32_t addr, val;
     void run(Executor &x, Random &r) {
-        ATTRIBUTE(rs1, r.unique_reg({zero}));
-        ATTRIBUTE(rs2, r.unique_reg({zero, rs1}));
-        ATTRIBUTE(rd, r.unique_reg({zero, rs1, rs2}));
-        ATTRIBUTE(rd1, r.unique_reg({zero, rs1, rs2, rd}));
-        ATTRIBUTE(rd2, r.unique_reg({zero, rs1, rs2, rd1}));
+        REGISTERS(r, &rd1, &rd2, &rs1, &rs2);
         ATTRIBUTE(addr, align_memory_addr<2>(r.s_imm()));
         ATTRIBUTE(val, r.s_imm());
 
@@ -1334,20 +1517,20 @@ struct LUI1 : public test_rule_if {
         x.check(i == x.get_reg(rd) >> 12);
     }
 };
-/* AUIPC(rd, i1 + i2) == AUIPC(rd, i1), AUIPC(rd, i2) */
-// TODO: I had misread the spec. This property doesn't actually hold. Think of a different test.
-struct AUIPC_Additive : public test_rule_if {
+/* AUIPC adds u-immediate to PC. */
+struct AUIPC_1 : public test_rule_if {
     unsigned rd;
-    uint32_t i;
+    uint32_t u;
     void run(Executor &x, Random &r) {
         REGISTERS(r, &rd);
-        ATTRIBUTE(i, align_memory_addr<4>(r.u_imm() & 0xff));
-        x.code.AUIPC(rd, i);
-        x.run();
-        int o = x.get_reg(rd) >> 12;
+        ATTRIBUTE(u, r.u_imm());
 
-        // TODO: Revisit spec what should be going on here. This check documents current behavior.
-        x.check((o == (int)(i + 2)) || (o == (int)(i + 1)) || (o == (int)(i - 1)));
+        int32_t pc = x.core.pc;
+        x.code.AUIPC(rd, u);
+        x.run();
+
+        x.check((x.get_reg(rd) & 0x7ff) == (pc & 0x7ff));
+        x.check(x.get_reg(rd) >= u);
     }
 };
 /* ADD(rs1, -rs2) == 0 implies BEQ. */
@@ -1437,12 +1620,12 @@ struct SLTI_1 : public test_rule_if {
         }
     }
 };
-/* SLTIU(rd, rs1, I) => !SLTIU(rd, I, rs1) */
-struct SLTIU_1 : public test_rule_if {
-    unsigned rd1, rd2, rs1;
-    int32_t i1, i2;
+/* SLTIU: Asymmetry of < relation. */
+struct SLTIU_Asymmetric : public test_rule_if {
+    unsigned rd1, rd2, rd3, rs1;
+    uint32_t i1, i2;
     void run(Executor &x, Random &r) {
-        REGISTERS(r, &rd1, &rd2, &rs1);
+        REGISTERS(r, &rd1, &rd2, &rd3, &rs1);
         ATTRIBUTE(i1, r.i_imm());
         ATTRIBUTE(i2, r.i_imm());
 
@@ -1450,13 +1633,13 @@ struct SLTIU_1 : public test_rule_if {
         x.code.SLTIU(rd1, rs1, i2);
         x.code.LI(rs1, i2);
         x.code.SLTIU(rd2, rs1, i1);
+        x.code.SLTIU(rd3, rs1, i2);
         x.run();
 
-        if (i1 == i2) {
-            x.check(x.get_reg(rd1) == x.get_reg(rd2));
-        } else {
-            x.check(x.get_reg(rd1) != x.get_reg(rd2));
-        }
+        // Antisymmetric: aRb AND bRa => a == b.
+        x.check(!(x.get_reg(rd1) && x.get_reg(rd2)) || i1 == i2);
+        // Irreflexive: a == b => NOT aRb.
+        x.check(!x.get_reg(rd3));
     }
 };
 /* SLTI: (a < b) == !(-a < -b) */
@@ -1496,6 +1679,21 @@ struct SUB_ADD_Equiv : public test_rule_if {
         x.code.ADD(rd2, rs1, rs2);
         x.run();
         x.check(x.get_reg(rd1) == x.get_reg(rd2));
+    }
+};
+/* a > b => SUB(a, |b|) < a */
+struct SUB_Negates : public test_rule_if {
+    unsigned rd, rs1, rs2;
+    int32_t i;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd, &rs1, &rs2);
+        ATTRIBUTE(i, r.i_imm());
+        x.code.LI(rs1, 0);
+        x.code.LI(rs2, i);
+        x.code.SUB(rd, rs1, rs2);
+        x.run();
+        //printf("X: %d %d\n", (int)x.get_reg(rd), i);
+        x.check((int32_t)x.get_reg(rd) == -i);
     }
 };
 /* SRLI and SLLI are inverses of each other */
@@ -1570,8 +1768,8 @@ struct SLTI_3 : public test_rule_if {
         x.check(x.get_reg(rd1) == x.get_reg(rd2));
     }
 };
-/* SLTI: SLTU(rd, rs2, -rs2) == 1*/
-struct SLTI_4 : public test_rule_if {
+/* SLTU: SLTU(rd, rs2, -rs2) == 1 */
+struct SLTU_1 : public test_rule_if {
     unsigned rd, rs1, rs2;
     int32_t i;
     void run(Executor &x, Random &r) {
@@ -1588,6 +1786,73 @@ struct SLTI_4 : public test_rule_if {
         } else {
             x.check(x.get_reg(rd) == 1);
         }
+    }
+};
+/* i1 < i2 => SLTU(i1, i2), i1 >= i2 => !SLTU(i1, i2) */
+struct SLTU_2 : public test_rule_if {
+    unsigned rd, rs1, rs2;
+    uint32_t i1, i2;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd, &rs1, &rs2);
+        ATTRIBUTE(i1, r.i_imm());
+        ATTRIBUTE(i2, r.i_imm());
+
+        x.code.LI(rs1, i1);
+        x.code.LI(rs2, i2);
+        x.code.SLTU(rd, rs1, rs2);
+        x.run();
+
+        x.check(!(i1 < i2) || x.get_reg(rd));
+        x.check(!(i1 >= i2) || !x.get_reg(rd));
+    }
+};
+/* x < x is never true (anti-reflexive) */
+struct SLTI_4 : public test_rule_if {
+    unsigned rd, rs1;
+    int32_t i;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd, &rs1);
+        ATTRIBUTE(i, r.i_imm());
+
+        x.code.LI(rs1, i);
+        x.code.SLTI(rd, rs1, i);
+        x.run();
+
+        x.check(x.get_reg(rd) == 0);
+    }
+};
+/* Negative numbers are less than positive ones. */
+struct SLTI_PosNeg : public test_rule_if {
+    unsigned rd, rd2, rs1;
+    int32_t i1, i2;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd, &rs1);
+        ATTRIBUTE(i1, (r.i_imm() & I_MASK) & (~0x800)); // Clear sign bit.
+        ATTRIBUTE(i2, (r.i_imm() & I_MASK) | (0x800)); // Set sign bit.
+
+        x.code.LI(rs1, i1);
+        x.code.SLTI(rd, rs1, i2);
+        x.run();
+
+        //printf("%x %x\n", i1, i2);
+        x.check(!x.get_reg(rd));
+    }
+};
+/* Unsigned a < b less-than implies SLTIU(a,b). */
+struct SLTIU_Unsigned : public test_rule_if {
+    unsigned rd, rs1;
+    uint32_t i1, i2;
+    int32_t off;
+    void run(Executor &x, Random &r) {
+        REGISTERS(r, &rd, &rs1);
+        ATTRIBUTE(i1, r.i_imm());
+        ATTRIBUTE(i2, r.i_imm());
+
+        x.code.LI(rs1, i1);
+        x.code.SLTIU(rd, rs1, i2);
+        x.run();
+
+        x.check(!(i1 < i2) || x.get_reg(rd));
     }
 };
 /* (a | (b & c)) | (b & ~c) == a | b */
@@ -1736,10 +2001,6 @@ struct BGE_Dup : public test_rule_if {
 };
 
 /* Common */
-std::vector<std::shared_ptr<test_rule_if>> rules_ = {
-    std::make_shared<SRL_Meta2>(),
-    std::make_shared<SLL_Meta2>(),
-};
 std::vector<std::shared_ptr<test_rule_if>> rules = {
     std::make_shared<ADD_ADDI_Equiv>(),
     std::make_shared<ADD_ADDI_zero>(),
@@ -1757,18 +2018,21 @@ std::vector<std::shared_ptr<test_rule_if>> rules = {
     std::make_shared<AND_OR_Equiv>(),
     std::make_shared<ADD_Split1>(),
     std::make_shared<ADD_Split2>(),
-    //std::make_shared<AUIPC_Additive>(),
+    std::make_shared<AUIPC_1>(),
     std::make_shared<BEQ_Dup>(),
     std::make_shared<BEQ_Zero>(),
     std::make_shared<BGE_Dup>(),
     std::make_shared<BGE_Triangle>(),
     std::make_shared<BGE_BLTE_Equiv>(),
     std::make_shared<BGE_SLT_Equiv>(),
+    std::make_shared<BGEU_Antisymmetry>(),
+    std::make_shared<BLT_Asymmetry>(),
     std::make_shared<BLT_Dup>(),
     std::make_shared<BLT_Meta1>(),
     std::make_shared<BLT_SLT_Equiv>(),
     std::make_shared<BLT_Triangle>(),
     std::make_shared<BNE_Dup>(),
+    std::make_shared<BLTU_1>(),
     std::make_shared<BLTU_Meta1>(),
     std::make_shared<Branch_Exclusive1>(),
     std::make_shared<Branch_Exclusive2>(),
@@ -1798,11 +2062,13 @@ std::vector<std::shared_ptr<test_rule_if>> rules = {
     std::make_shared<LX_ExtCheck<LoadInstr::LHU>>(),
     std::make_shared<OR_Equiv>(),
     std::make_shared<AND_Equiv>(),
+    std::make_shared<SB_Adjacent>(),
     std::make_shared<SB_Store_Load>(),
-    // TODO: Currently requires an atomic_unlock() which is not implemented (default interface
-    // inherits from EmptyMemoryInterface, where the exception comes from).
-    //std::make_shared<SH_Store_Load>(),
+    std::make_shared<SH_Adjacent>(),
+    std::make_shared<SH_Store_Load>(),
+    std::make_shared<SRA_1>(),
     std::make_shared<SRA_preserves_sign>(),
+    std::make_shared<SRA_Zero>(),
     std::make_shared<SRAI_preserves_sign>(),
     std::make_shared<SLL_Meta1>(),
     std::make_shared<SLL_Meta2>(),
@@ -1812,11 +2078,18 @@ std::vector<std::shared_ptr<test_rule_if>> rules = {
     std::make_shared<SLTI_2>(),
     std::make_shared<SLTI_3>(),
     std::make_shared<SLTI_4>(),
-    std::make_shared<SLTIU_1>(),
+    std::make_shared<SLTU_1>(),
+    std::make_shared<SLTU_2>(),
+    std::make_shared<SLTI_PosNeg>(),
+    std::make_shared<SLTIU_Asymmetric>(),
+    std::make_shared<SLTIU_Unsigned>(),
+    std::make_shared<SRL_1>(),
+    std::make_shared<SRL_2>(),
     std::make_shared<SRL_Meta1>(),
     std::make_shared<SRL_Meta2>(),
     std::make_shared<SRLI_Meta1>(),
     std::make_shared<SUB_ADD_Equiv>(),
+    std::make_shared<SUB_Negates>(),
     //std::make_shared<SW_RefCheck>(), // TODO: Unimplemented memory interfaces.
     std::make_shared<SX_LX_Id<1>>(),
     std::make_shared<SX_LX_Id<2>>(),
@@ -1832,6 +2105,7 @@ std::string test_rule_if::to_string() {
     std::ostringstream ss;
     std::string class_name = abi::__cxa_demangle(typeid(*this).name(), 0, 0, 0);
     ss << class_name << std::endl;
+    //test_name = class_name;
     for (auto attr : attributes) {
         std::string name = boost::get<0>(attr);
         boost::any value = boost::get<1>(attr);
