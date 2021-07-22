@@ -3658,6 +3658,9 @@ struct BGEU_390 : OperationMutation<Opcode::BGEU, BGEU_390> {
     }
 };
 
+std::vector<std::shared_ptr<exec_mutator_if>> mutators_{
+    std::make_shared<EmptyMutation>(),
+};
 std::vector<std::shared_ptr<exec_mutator_if>> mutators{
     std::make_shared<EmptyMutation>(),
     std::make_shared<ADDI_2>(),

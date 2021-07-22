@@ -155,7 +155,6 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::SLTI:
-			//printf("%d %d\n", read_reg(rs1()), I_imm());
 			write_reg(rd(), read_reg(rs1()) < I_imm());
 			break;
 

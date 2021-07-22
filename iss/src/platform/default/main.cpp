@@ -19,6 +19,7 @@ std::multimap<B, A> flip_map(const std::map<A, B> &src) {
 }
 
 int main(int argc, char **argv) {
+    //srand(time(NULL));
     constexpr unsigned max_iterations_per_mutant = 1000000;
     std::vector<KilledMutation> killed;
     std::map<std::string, int> stats;

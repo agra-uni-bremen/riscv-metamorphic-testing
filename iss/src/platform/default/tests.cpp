@@ -96,7 +96,7 @@ struct LX_AddrId : public test_rule_if {
         return test_rule_if::to_string<T>();
     }
 };
-/* */
+/* SB(x, off) => (LBU(off) & 0xff) == x*/
 template <unsigned N>
 struct SX_LX_Id : public test_rule_if {
     static_assert(N == 1 || N == 2 || N == 4, "invalid memory width");
@@ -130,7 +130,7 @@ struct SX_LX_Id : public test_rule_if {
         x.check(x.get_reg(rd) == x.get_reg(rs2));
     }
 };
-/* */
+/* Two LHU combine into one LW. */
 struct LW_Combine2 : public test_rule_if {
     unsigned rd, rs1, rx, ry;
     uint32_t a;
@@ -155,7 +155,7 @@ struct LW_Combine2 : public test_rule_if {
         x.check(x.get_reg(rd) == x.get_reg(rx));
     }
 };
-/* */
+/* Two LBU combine into one LHU. */
 struct LHU_Combine2 : public test_rule_if {
     unsigned rd, rs1, rx, ry;
     uint32_t a;
@@ -708,8 +708,6 @@ struct ADDI_Inverse : public test_rule_if {
 };
 /* JAL(rd,4) == AUIPC(rd,0) */
 struct JAL_AUIPC_Equiv : public test_rule_if {
-    // TODO: Double check correctness of this test case after finding out
-    // what's wrong with the branch test cases.
     unsigned rd1, rd2;
     uint32_t i;
     void run(Executor &x, Random &r) {
@@ -983,63 +981,62 @@ struct BGEU_Antisymmetry : public test_rule_if {
 /* BEQ/BGE(U) and BNE, BLT, BLTU are mutually exclusive. */
 struct Branch_Exclusive2 : public test_rule_if {
     unsigned rd1, rd2, rs1, rs2;
-    uint32_t i1, i2, i3;
+    uint32_t i1, i2, off;
     void run(Executor &x, Random &r) {
         REGISTERS(r, &rd1, &rd2, &rs1, &rs2);
         ATTRIBUTE(i1, r.i_imm());
-        ATTRIBUTE(i2, r.b_imm() & 0xfff);  // Only allow positive offsets.
+        ATTRIBUTE(i2, r.i_imm());
+        ATTRIBUTE(off, r.b_imm() & 0xfff);  // Only allow positive offsets.
 
-        if (i2 == 4) {
+        if (off == 4) {
             return;
         }
 
         x.code.LI(rs1, i1);
-        x.code.LI(rs2, i1);
+        x.code.LI(rs2, i2);
+        
         x.code.JAL(rd1, 0);
-        x.code.BEQ(rs1, rs2, i2);
+        x.code.BEQ(rs1, rs2, off);
         x.code.JAL(rd2, 0);
         x.run();
-        x.check((i1 == i2) || x.get_reg(rd2) == x.get_reg(rd1) + i2);
+        bool beq = x.get_reg(rd2) == x.get_reg(rd1) + off;
 
-        x.code.LI(rs1, i1);
-        x.code.LI(rs2, i1);
         x.code.JAL(rd1, 0);
-        x.code.BGE(rs1, rs2, i2);
+        x.code.BGE(rs1, rs2, off);
         x.code.JAL(rd2, 0);
         x.run();
-        x.check((i1 == i2) || x.get_reg(rd2) == x.get_reg(rd1) + i2);
+        bool bge = x.get_reg(rd2) == x.get_reg(rd1) + off;
 
-        x.code.LI(rs1, i1);
-        x.code.LI(rs2, i1);
         x.code.JAL(rd1, 0);
-        x.code.BGEU(rs1, rs2, i2);
+        x.code.BGEU(rs1, rs2, off);
         x.code.JAL(rd2, 0);
         x.run();
-        x.check((i1 == i2) || x.get_reg(rd2) == x.get_reg(rd1) + i2);
+        bool bgeu = x.get_reg(rd2) == x.get_reg(rd1) + off;
 
-        x.code.LI(rs1, i1);
-        x.code.LI(rs2, i1);
         x.code.JAL(rd1, 0);
-        x.code.BNE(rs1, rs2, i2);
+        x.code.BNE(rs1, rs2, off);
         x.code.JAL(rd2, 0);
         x.run();
-        x.check((i1 == i2) || x.get_reg(rd2) != x.get_reg(rd1) + i2);
+        bool bne = x.get_reg(rd2) == x.get_reg(rd1) + off;
 
-        x.code.LI(rs1, i1);
-        x.code.LI(rs2, i1);
         x.code.JAL(rd1, 0);
-        x.code.BLT(rs1, rs2, i2);
+        x.code.BLT(rs1, rs2, off);
         x.code.JAL(rd2, 0);
         x.run();
-        x.check((i1 == i2) || x.get_reg(rd2) != x.get_reg(rd1) + i2);
+        bool blt = x.get_reg(rd2) == x.get_reg(rd1) + off;
 
-        x.code.LI(rs1, i1);
-        x.code.LI(rs2, i1);
         x.code.JAL(rd1, 0);
-        x.code.BLTU(rs1, rs2, i2);
+        x.code.BLTU(rs1, rs2, off);
         x.code.JAL(rd2, 0);
         x.run();
-        x.check((i1 == i2) || x.get_reg(rd2) != x.get_reg(rd1) + i2);
+        bool bltu = x.get_reg(rd2) == x.get_reg(rd1) + off;
+
+        // Either i1 != i2 or i1 == i2.
+        x.check(bne != beq);
+        // Either i1 < i2 or i1 >= i2.
+        x.check(blt != bge);
+        // Either i1 < i2 or i1 >= i2.
+        x.check(bltu != bgeu);
     }
 };
 /* BLTU(rs1, rs2) || BLTU(rs2, rs1) */
@@ -2001,6 +1998,9 @@ struct BGE_Dup : public test_rule_if {
 };
 
 /* Common */
+std::vector<std::shared_ptr<test_rule_if>> rules_ = {
+    std::make_shared<Branch_Exclusive2>(),
+};
 std::vector<std::shared_ptr<test_rule_if>> rules = {
     std::make_shared<ADD_ADDI_Equiv>(),
     std::make_shared<ADD_ADDI_zero>(),
