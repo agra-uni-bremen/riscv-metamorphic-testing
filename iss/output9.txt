@@ -1,0 +1,3113 @@
+> check mutator: Empty Mutation ... survived.
+> check mutator: ADDI_2 ... killed after 9 iterations by:
+LHU:LX_AddrId<(LoadInstr)3>
+	rs1	= 5
+	rs2	= 26
+	rd1	= 7
+	rd2	= 30
+	a	= 203653653
+	off1	= -1527
+	off2	= 296
+> check mutator: ADDI_3 ... killed after 3 iterations by:
+LBU:LX_AddrId<(LoadInstr)1>
+	rs1	= 11
+	rs2	= 29
+	rd1	= 13
+	rd2	= 6
+	a	= 1936501383
+	off1	= -1911
+	off2	= 949
+> check mutator: ADDI_4 ... killed after 2 iterations by:
+LW_LHU_Equiv
+	rs1	= 6
+	rs2	= 19
+	rd	= 22
+	rd1	= 9
+	rd2	= 22
+	addr	= 268
+	val	= 4294965715
+> check mutator: ADDI_5 ... killed after 5 iterations by:
+SUB_Negates
+	rd	= 19
+	rs1	= 14
+	rs2	= 9
+	i	= 60
+> check mutator: ADDI_6 ... killed after 1 iterations by:
+ADDI_Inverse
+	rd	= 20
+	rs1	= 15
+	i	= 529
+> check mutator: ADDI_7 ... killed after 2 iterations by:
+LB:LX_AddrId<(LoadInstr)0>
+	rs1	= 4
+	rs2	= 18
+	rd1	= 27
+	rd2	= 6
+	a	= 348123016
+	off1	= -1892
+	off2	= 418
+> check mutator: ADDI_8 ... killed after 5 iterations by:
+SLTI_1
+	rd1	= 15
+	rd2	= 1
+	rs1	= 20
+	i1	= 608
+	i2	= 697
+> check mutator: ADDI_9 ... killed after 1 iterations by:
+SH_Adjacent
+	rs1	= 9
+	rs2	= 19
+	rd1	= 1
+	rd2	= 13
+	rd3	= 25
+	addr	= 654
+	off	= 198
+	val	= 51
+> check mutator: SLTI_10 ... killed after 10 iterations by:
+SLTI_2
+	rd1	= 31
+	rd2	= 30
+	rs1	= 24
+	i1	= 1183
+	i2	= 1250
+> check mutator: SLTI_11 ... killed after 21 iterations by:
+SLTI_PosNeg
+	rd	= 15
+	rs1	= 13
+	i1	= 669
+	i2	= 2273
+> check mutator: SLTI_12 ... killed after 76 iterations by:
+SLTI_4
+	rd	= 9
+	rs1	= 28
+	i	= 1312
+> check mutator: SLTI_13 ... killed after 118 iterations by:
+SLTI_1
+	rd1	= 2
+	rd2	= 1
+	rs1	= 10
+	i1	= 77
+	i2	= -1927
+> check mutator: SLTI_14 ... killed after 11 iterations by:
+SLTI_PosNeg
+	rd	= 27
+	rs1	= 6
+	i1	= 31
+	i2	= 2221
+> check mutator: SLTI_15 ... killed after 315 iterations by:
+SLTI_4
+	rd	= 27
+	rs1	= 11
+	i	= 1126
+> check mutator: SLTI_16 ... killed after 96 iterations by:
+SLTI_1
+	rd1	= 3
+	rd2	= 12
+	rs1	= 26
+	i1	= -133
+	i2	= -1844
+> check mutator: SLTI_17 ... killed after 43 iterations by:
+SLTI_4
+	rd	= 7
+	rs1	= 4
+	i	= 1322
+> check mutator: SLTI_18 ... killed after 602 iterations by:
+SLTI_4
+	rd	= 7
+	rs1	= 24
+	i	= -634
+> check mutator: SLTI_19 ... killed after 26 iterations by:
+SLTI_4
+	rd	= 23
+	rs1	= 18
+	i	= 715
+> check mutator: SLTI_20 ... killed after 4 iterations by:
+SLTI_2
+	rd1	= 19
+	rd2	= 24
+	rs1	= 29
+	i1	= 1934
+	i2	= 1675
+> check mutator: SLTI_21 ... killed after 15 iterations by:
+SLTI_2
+	rd1	= 3
+	rd2	= 26
+	rs1	= 31
+	i1	= 1995
+	i2	= 1848
+> check mutator: SLTI_22 ... killed after 9 iterations by:
+SLTI_PosNeg
+	rd	= 24
+	rs1	= 25
+	i1	= 1010
+	i2	= 2827
+> check mutator: SLTIU_23 ... killed after 7 iterations by:
+SLTIU_Asymmetric
+	rd1	= 29
+	rd2	= 15
+	rd3	= 7
+	rs1	= 1
+	i1	= 1470
+	i2	= 870
+> check mutator: SLTIU_24 ... killed after 305 iterations by:
+SLTIU_Unsigned
+	rd	= 25
+	rs1	= 7
+	i1	= 4294965395
+	i2	= 4294966349
+> check mutator: SLTIU_25 ... killed after 57 iterations by:
+SLTIU_Asymmetric
+	rd1	= 8
+	rd2	= 3
+	rd3	= 2
+	rs1	= 27
+	i1	= 1071
+	i2	= 1892
+> check mutator: SLTIU_26 ... killed after 28 iterations by:
+SLTIU_Asymmetric
+	rd1	= 31
+	rd2	= 30
+	rd3	= 8
+	rs1	= 6
+	i1	= 4294965458
+	i2	= 4294967258
+> check mutator: SLTIU_27 ... killed after 113 iterations by:
+SLTIU_Asymmetric
+	rd1	= 27
+	rd2	= 20
+	rd3	= 22
+	rs1	= 29
+	i1	= 4294966568
+	i2	= 830
+> check mutator: SLTIU_28 ... killed after 410 iterations by:
+SLTIU_Asymmetric
+	rd1	= 3
+	rd2	= 4
+	rd3	= 17
+	rs1	= 18
+	i1	= 1988
+	i2	= 497
+> check mutator: SLTIU_29 ... killed after 48 iterations by:
+SLTIU_Asymmetric
+	rd1	= 9
+	rd2	= 15
+	rd3	= 10
+	rs1	= 30
+	i1	= 1790
+	i2	= 703
+> check mutator: SLTIU_30 ... killed after 44 iterations by:
+SLTIU_Asymmetric
+	rd1	= 31
+	rd2	= 6
+	rd3	= 11
+	rs1	= 1
+	i1	= 905
+	i2	= 957
+> check mutator: SLTIU_31 ... killed after 285 iterations by:
+SLTIU_Asymmetric
+	rd1	= 9
+	rd2	= 18
+	rd3	= 17
+	rs1	= 27
+	i1	= 4294966576
+	i2	= 608
+> check mutator: SLTIU_32 ... killed after 28 iterations by:
+SLTIU_Asymmetric
+	rd1	= 11
+	rd2	= 21
+	rd3	= 1
+	rs1	= 28
+	i1	= 1306
+	i2	= 1298
+> check mutator: SLTIU_33 ... killed after 77 iterations by:
+SLTIU_Asymmetric
+	rd1	= 8
+	rd2	= 10
+	rd3	= 5
+	rs1	= 1
+	i1	= 4294965516
+	i2	= 2018
+> check mutator: SLTIU_34 ... killed after 22 iterations by:
+SLTIU_Asymmetric
+	rd1	= 8
+	rd2	= 4
+	rd3	= 9
+	rs1	= 6
+	i1	= 4294966762
+	i2	= 4294965581
+> check mutator: SLTIU_35 ... killed after 25 iterations by:
+SLTIU_Asymmetric
+	rd1	= 4
+	rd2	= 31
+	rd3	= 13
+	rs1	= 11
+	i1	= 1433
+	i2	= 847
+> check mutator: SLTIU_36 ... killed after 122 iterations by:
+SLTIU_Unsigned
+	rd	= 14
+	rs1	= 12
+	i1	= 1565
+	i2	= 4294966228
+> check mutator: XORI_37 ... killed after 4 iterations by:
+XORI_Invert
+	rd	= 8
+	rs1	= 27
+	c	= 2032
+> check mutator: XORI_38 ... killed after 60 iterations by:
+XOR_XORI_Equiv
+	rd1	= 18
+	rd2	= 20
+	rs1	= 5
+	rs2	= 14
+	c1	= 4294966470
+	c2	= 877
+> check mutator: XORI_39 ... killed after 33 iterations by:
+XORI_Invert
+	rd	= 5
+	rs1	= 1
+	c	= 33
+> check mutator: XORI_40 ... killed after 13 iterations by:
+XOR_XORI_Equiv
+	rd1	= 19
+	rd2	= 9
+	rs1	= 4
+	rs2	= 1
+	c1	= 494
+	c2	= 1448
+> check mutator: XORI_41 ... killed after 3 iterations by:
+XOR_XORI_Equiv
+	rd1	= 10
+	rd2	= 1
+	rs1	= 8
+	rs2	= 20
+	c1	= 4294966773
+	c2	= 4294965638
+> check mutator: XORI_42 ... killed after 100 iterations by:
+XORI_Invert
+	rd	= 24
+	rs1	= 28
+	c	= 367
+> check mutator: XORI_43 ... killed after 11 iterations by:
+XOR_Meta1
+	rd1	= 16
+	rd2	= 2
+	rs1	= 14
+	a	= 1082931942
+	b	= 843425424
+	c	= 1916352677
+> check mutator: XORI_44 ... killed after 63 iterations by:
+XOR_XORI_Equiv
+	rd1	= 17
+	rd2	= 12
+	rs1	= 22
+	rs2	= 1
+	c1	= 1614
+	c2	= 771
+> check mutator: XORI_45 ... killed after 26 iterations by:
+XOR_Meta1
+	rd1	= 7
+	rd2	= 10
+	rs1	= 6
+	a	= 311662298
+	b	= 67573835
+	c	= 843409712
+> check mutator: XORI_46 ... killed after 39 iterations by:
+XOR_XORI_Equiv
+	rd1	= 1
+	rd2	= 22
+	rs1	= 23
+	rs2	= 7
+	c1	= 4294965405
+	c2	= 1251
+> check mutator: ORI_47 ... killed after 49 iterations by:
+AND_OR_1
+	rd1	= 8
+	rd2	= 21
+	rs1	= 15
+	a	= 990410939
+	b	= 1767017659
+> check mutator: ORI_48 ... killed after 181 iterations by:
+AND_OR_1
+	rd1	= 15
+	rd2	= 26
+	rs1	= 13
+	a	= 1398767866
+	b	= 840153143
+> check mutator: ORI_49 ... killed after 76 iterations by:
+OR_Equiv
+	rd1	= 27
+	rd2	= 13
+	rs1	= 28
+	rs2	= 24
+	a	= -184
+	b	= 812
+	c	= 630
+> check mutator: ORI_50 ... killed after 20 iterations by:
+AND_OR_1
+	rd1	= 12
+	rd2	= 17
+	rs1	= 4
+	a	= 1507364694
+	b	= 1986969872
+> check mutator: ORI_51 ... killed after 92 iterations by:
+AND_OR_1
+	rd1	= 16
+	rd2	= 19
+	rs1	= 3
+	a	= 1661782104
+	b	= 496459270
+> check mutator: ORI_52 ... killed after 32 iterations by:
+OR_Equiv
+	rd1	= 25
+	rd2	= 28
+	rs1	= 31
+	rs2	= 19
+	a	= 1942
+	b	= -1739
+	c	= -1049
+> check mutator: ORI_53 ... killed after 66 iterations by:
+OR_Equiv
+	rd1	= 21
+	rd2	= 16
+	rs1	= 28
+	rs2	= 2
+	a	= 1519
+	b	= 1960
+	c	= -572
+> check mutator: ORI_54 ... killed after 21 iterations by:
+AND_OR_1
+	rd1	= 24
+	rd2	= 3
+	rs1	= 25
+	a	= 591997362
+	b	= 748883801
+> check mutator: ORI_55 ... killed after 48 iterations by:
+AND_OR_1
+	rd1	= 31
+	rd2	= 13
+	rs1	= 12
+	a	= 229684737
+	b	= 1825995668
+> check mutator: ORI_56 ... killed after 1 iterations by:
+AND_OR_1
+	rd1	= 31
+	rd2	= 13
+	rs1	= 26
+	a	= 353959426
+	b	= 137101269
+> check mutator: ANDI_57 ... killed after 32 iterations by:
+XOR_Meta1
+	rd1	= 15
+	rd2	= 1
+	rs1	= 9
+	a	= 1358623176
+	b	= 843372928
+	c	= 1121270976
+> check mutator: ANDI_58 ... killed after 25 iterations by:
+SX_LX_Id<1u>
+	rs1	= 16
+	rs2	= 10
+	rd	= 31
+	a	= 1178764019
+	b	= 1539013883
+	off	= -1628
+> check mutator: ANDI_59 ... killed after 12 iterations by:
+AND_OR_1
+	rd1	= 3
+	rd2	= 21
+	rs1	= 7
+	a	= 1545199203
+	b	= 1724712283
+> check mutator: ANDI_60 ... killed after 41 iterations by:
+AND_OR_1
+	rd1	= 11
+	rd2	= 3
+	rs1	= 2
+	a	= 969635304
+	b	= 673824252
+> check mutator: ANDI_61 ... killed after 8 iterations by:
+ADD_Split1
+	rs1	= 6
+	rs2	= 10
+	rd1	= 27
+	rd2	= 8
+	rx	= 30
+	ry	= 18
+	a	= 1672749795
+	b	= 1553646414
+> check mutator: ANDI_62 ... killed after 10 iterations by:
+ADD_Split1
+	rs1	= 25
+	rs2	= 7
+	rd1	= 5
+	rd2	= 23
+	rx	= 17
+	ry	= 26
+	a	= 618030638
+	b	= 2060060238
+> check mutator: ANDI_63 ... killed after 23 iterations by:
+AND_OR_1
+	rd1	= 31
+	rd2	= 21
+	rs1	= 16
+	a	= 1818659535
+	b	= 1281393319
+> check mutator: ANDI_64 ... killed after 21 iterations by:
+ADD_Split1
+	rs1	= 30
+	rs2	= 24
+	rd1	= 23
+	rd2	= 27
+	rx	= 3
+	ry	= 21
+	a	= 1307640653
+	b	= 258969553
+> check mutator: ANDI_65 ... killed after 65 iterations by:
+AND_Equiv
+	rd1	= 6
+	rd2	= 12
+	rs1	= 11
+	rs2	= 26
+	a	= 1027
+	b	= 1625
+	c	= 1039
+> check mutator: ANDI_66 ... killed after 6 iterations by:
+AND_OR_1
+	rd1	= 16
+	rd2	= 17
+	rs1	= 29
+	a	= 1613058732
+	b	= 275442780
+> check mutator: ADD_67 ... killed after 39 iterations by:
+SUB_ADD_Equiv
+	rd1	= 18
+	rd2	= 11
+	rs1	= 1
+	rs2	= 17
+	i1	= 1902
+	i2	= 938
+> check mutator: ADD_68 ... killed after 6 iterations by:
+SUB_ADD_Equiv
+	rd1	= 29
+	rd2	= 13
+	rs1	= 7
+	rs2	= 1
+	i1	= -693
+	i2	= -851
+> check mutator: ADD_69 ... killed after 2 iterations by:
+LH:LX_ExtCheck<(LoadInstr)2>
+	rs1	= 20
+	rd	= 16
+	rx	= 20
+	a	= 653192428
+	off	= -616
+> check mutator: ADD_70 ... killed after 1 iterations by:
+ADD_ADDI_zero
+	rd1	= 17
+	rd2	= 3
+	rs1	= 22
+	i	= 678105257
+> check mutator: ADD_71 ... killed after 31 iterations by:
+LBU:LX_ExtCheck<(LoadInstr)1>
+	rs1	= 1
+	rd	= 1
+	rx	= 29
+	a	= 216357594
+	off	= 1601
+> check mutator: ADD_72 ... killed after 3 iterations by:
+LBU:LX_ExtCheck<(LoadInstr)1>
+	rs1	= 5
+	rd	= 2
+	rx	= 16
+	a	= 90955594
+	off	= -2006
+> check mutator: ADD_73 ... killed after 8 iterations by:
+ADD_Split2
+	rs1	= 8
+	rs2	= 2
+	rd1	= 3
+	rd2	= 10
+	a	= 753213908
+	b	= 1850710906
+> check mutator: SUB_74 ... killed after 9 iterations by:
+LBU:LX_AddrId<(LoadInstr)1>
+	rs1	= 23
+	rs2	= 15
+	rd1	= 8
+	rd2	= 7
+	a	= 1236510238
+	off1	= -795
+	off2	= -1414
+> check mutator: SUB_75 ... killed after 3 iterations by:
+SUB_Negates
+	rd	= 14
+	rs1	= 19
+	rs2	= 1
+	i	= -1033
+> check mutator: SUB_76 ... killed after 1 iterations by:
+SUB_Negates
+	rd	= 19
+	rs1	= 29
+	rs2	= 4
+	i	= -1028
+> check mutator: SUB_77 ... killed after 97 iterations by:
+SUB_ADD_Equiv
+	rd1	= 29
+	rd2	= 19
+	rs1	= 31
+	rs2	= 28
+	i1	= 649
+	i2	= 1869
+> check mutator: SUB_78 ... killed after 15 iterations by:
+LBU:LX_AddrId<(LoadInstr)1>
+	rs1	= 17
+	rs2	= 30
+	rd1	= 7
+	rd2	= 25
+	a	= 228072274
+	off1	= 617
+	off2	= 1538
+> check mutator: SUB_79 ... killed after 29 iterations by:
+LW:LX_AddrId<(LoadInstr)4>
+	rs1	= 7
+	rs2	= 4
+	rd1	= 28
+	rd2	= 29
+	a	= 56271644
+	off1	= 1948
+	off2	= -1499
+> check mutator: SUB_80 ... killed after 4 iterations by:
+SUB_Negates
+	rd	= 11
+	rs1	= 30
+	rs2	= 21
+	i	= 16
+> check mutator: SLL_81 ... killed after 107 iterations by:
+SLL_Meta2
+	rd1	= 5
+	rd2	= 13
+	rd3	= 15
+	rs1	= 6
+	rs2	= 21
+	a	= 0
+	b	= 65390
+> check mutator: SLL_82 ... killed after 40 iterations by:
+SLL_Meta1
+	rd1	= 24
+	rd2	= 19
+	rs1	= 29
+	rs2	= 11
+	a	= 137
+	b	= 48
+> check mutator: SLL_83 ... killed after 361 iterations by:
+SLL_Meta1
+	rd1	= 12
+	rd2	= 13
+	rs1	= 23
+	rs2	= 19
+	a	= 1396
+	b	= 1095
+> check mutator: SLL_84 ... killed after 26 iterations by:
+SLL_Meta1
+	rd1	= 23
+	rd2	= 13
+	rs1	= 19
+	rs2	= 21
+	a	= 4294966942
+	b	= 69
+> check mutator: SLL_85 ... killed after 5 iterations by:
+SLL_Meta1
+	rd1	= 4
+	rd2	= 11
+	rs1	= 27
+	rs2	= 5
+	a	= 4294966734
+	b	= 910
+> check mutator: SLL_86 ... killed after 139 iterations by:
+SLL_Meta2
+	rd1	= 13
+	rd2	= 17
+	rd3	= 7
+	rs1	= 26
+	rs2	= 1
+	a	= 6
+	b	= 1
+> check mutator: SLL_87 ... killed after 18 iterations by:
+SLL_Meta1
+	rd1	= 23
+	rd2	= 26
+	rs1	= 9
+	rs2	= 1
+	a	= 2006
+	b	= 563
+> check mutator: SLT_88 ... killed after 7 iterations by:
+BGE_SLT_Equiv
+	rd1	= 18
+	rd2	= 27
+	rs1	= 29
+	rs2	= 20
+	i1	= -1903
+	i2	= -1053
+	off	= 1118
+> check mutator: SLT_89 ... killed after 48 iterations by:
+SLL_Meta2
+	rd1	= 16
+	rd2	= 28
+	rd3	= 23
+	rs1	= 26
+	rs2	= 20
+	a	= 1
+	b	= 374
+> check mutator: SLT_90 ... killed after 12190 iterations by:
+BGE_SLT_Equiv
+	rd1	= 17
+	rd2	= 16
+	rs1	= 26
+	rs2	= 11
+	i1	= -639
+	i2	= -639
+	off	= 3390
+> check mutator: SLT_91 ... killed after 8 iterations by:
+BGE_SLT_Equiv
+	rd1	= 30
+	rd2	= 31
+	rs1	= 25
+	rs2	= 18
+	i1	= 294
+	i2	= -1333
+	off	= 1792
+> check mutator: SLT_92 ... killed after 9 iterations by:
+BLT_SLT_Equiv
+	rd1	= 6
+	rd2	= 5
+	rs1	= 3
+	rs2	= 23
+	i1	= 648
+	i2	= 541
+	off	= 58
+> check mutator: SLT_93 ... killed after 2 iterations by:
+BLT_SLT_Equiv
+	rd1	= 17
+	rd2	= 26
+	rs1	= 6
+	rs2	= 7
+	i1	= 592
+	i2	= 1840
+	off	= 1816
+> check mutator: SLT_94 ... killed after 71 iterations by:
+SLL_Meta2
+	rd1	= 10
+	rd2	= 22
+	rd3	= 13
+	rs1	= 30
+	rs2	= 29
+	a	= 0
+	b	= 744
+> check mutator: SLT_95 ... killed after 1 iterations by:
+SLTI_3
+	rd1	= 10
+	rd2	= 1
+	rs1	= 9
+	rs2	= 4
+	i1	= 166
+	i2	= 140
+	c	= 109
+> check mutator: SLT_96 ... killed after 2 iterations by:
+SLTI_3
+	rd1	= 21
+	rd2	= 29
+	rs1	= 30
+	rs2	= 9
+	i1	= 59
+	i2	= 199
+	c	= 223
+> check mutator: SLT_97 ... killed after 63 iterations by:
+BLT_SLT_Equiv
+	rd1	= 20
+	rd2	= 10
+	rs1	= 1
+	rs2	= 3
+	i1	= -1596
+	i2	= 1695
+	off	= 3366
+> check mutator: SLT_98 ... killed after 77 iterations by:
+BGE_SLT_Equiv
+	rd1	= 12
+	rd2	= 6
+	rs1	= 26
+	rs2	= 8
+	i1	= 1051
+	i2	= 339
+	off	= 412
+> check mutator: SLTU_99 ... killed after 122 iterations by:
+SLTU_1
+	rd	= 17
+	rs1	= 30
+	rs2	= 8
+	i	= 1503
+> check mutator: SLTU_100 ... killed after 44 iterations by:
+SLTU_2
+	rd	= 23
+	rs1	= 4
+	rs2	= 24
+	i1	= 505
+	i2	= 4294966712
+> check mutator: SLTU_101 ... killed after 19128 iterations by:
+SLTU_2
+	rd	= 10
+	rs1	= 13
+	rs2	= 18
+	i1	= 905
+	i2	= 905
+> check mutator: SLTU_102 ... killed after 65 iterations by:
+SLTU_2
+	rd	= 12
+	rs1	= 11
+	rs2	= 3
+	i1	= 4294967121
+	i2	= 4294965778
+> check mutator: SLTU_103 ... killed after 150 iterations by:
+SLTU_1
+	rd	= 6
+	rs1	= 1
+	rs2	= 13
+	i	= 64298
+> check mutator: SLTU_104 ... killed after 225 iterations by:
+SLTU_2
+	rd	= 1
+	rs1	= 6
+	rs2	= 9
+	i1	= 929
+	i2	= 38
+> check mutator: SLTU_105 ... killed after 61 iterations by:
+SLTU_1
+	rd	= 17
+	rs1	= 26
+	rs2	= 12
+	i	= 1455
+> check mutator: SLTU_106 ... killed after 3 iterations by:
+SLTU_1
+	rd	= 29
+	rs1	= 1
+	rs2	= 8
+	i	= 63878
+> check mutator: SLTU_107 ... killed after 253 iterations by:
+SLTU_2
+	rd	= 29
+	rs1	= 25
+	rs2	= 19
+	i1	= 4294967045
+	i2	= 552
+> check mutator: SLTU_108 ... killed after 47 iterations by:
+SLTU_1
+	rd	= 15
+	rs1	= 14
+	rs2	= 25
+	i	= 187
+> check mutator: SLTU_109 ... killed after 423 iterations by:
+SLTU_1
+	rd	= 1
+	rs1	= 28
+	rs2	= 16
+	i	= 64430
+> check mutator: SLTU_110 ... killed after 138 iterations by:
+SLTU_2
+	rd	= 20
+	rs1	= 2
+	rs2	= 5
+	i1	= 4294966000
+	i2	= 672
+> check mutator: SRL_111 ... killed after 20 iterations by:
+SRL_1
+	rd	= 31
+	rs1	= 9
+	rs2	= 28
+	i	= 4294966747
+	shamt	= 10
+> check mutator: SRL_112 ... killed after 121 iterations by:
+SRL_2
+	rd	= 1
+	rs1	= 28
+	rs2	= 21
+	i	= 4294967019
+> check mutator: SRL_113 ... killed after 58 iterations by:
+SRL_2
+	rd	= 29
+	rs1	= 8
+	rs2	= 18
+	i	= 4294965638
+> check mutator: SRL_114 ... killed after 80 iterations by:
+SRL_Meta1
+	rd1	= 27
+	rd2	= 18
+	rs1	= 24
+	rs2	= 5
+	a	= 1518508896
+	b	= 217312838
+> check mutator: SRL_115 ... killed after 19 iterations by:
+SRL_Meta2
+	rd1	= 4
+	rd2	= 2
+	rd3	= 11
+	rs1	= 10
+	rs2	= 21
+	a	= 27
+	b	= 47
+> check mutator: SRL_116 ... killed after 14 iterations by:
+SRL_2
+	rd	= 1
+	rs1	= 19
+	rs2	= 20
+	i	= 4294965765
+> check mutator: SRL_117 ... killed after 18 iterations by:
+SRL_2
+	rd	= 7
+	rs1	= 12
+	rs2	= 19
+	i	= 951
+> check mutator: SRL_118 ... killed after 79 iterations by:
+SRL_1
+	rd	= 1
+	rs1	= 2
+	rs2	= 23
+	i	= 4294966596
+	shamt	= 27
+> check mutator: SRA_119 ... killed after 119 iterations by:
+SRA_1
+	rd	= 28
+	rs1	= 11
+	rs2	= 3
+	i	= 1456
+	shamt	= 19
+> check mutator: SRA_120 ... killed after 39 iterations by:
+SRA_Zero
+	rd	= 24
+	rs1	= 7
+	rs2	= 4
+	i	= 1397
+> check mutator: SRA_121 ... killed after 69 iterations by:
+SRA_preserves_sign
+	rd	= 9
+	rs1	= 3
+	rs2	= 28
+	i	= 1798
+> check mutator: SRA_122 ... killed after 19 iterations by:
+SRA_1
+	rd	= 1
+	rs1	= 4
+	rs2	= 2
+	i	= 900
+	shamt	= 9
+> check mutator: SRA_123 ... killed after 103 iterations by:
+SRA_preserves_sign
+	rd	= 12
+	rs1	= 13
+	rs2	= 14
+	i	= 1164
+> check mutator: SRA_124 ... killed after 159 iterations by:
+SRA_Zero
+	rd	= 8
+	rs1	= 28
+	rs2	= 31
+	i	= 4294966871
+> check mutator: SRA_125 ... killed after 43 iterations by:
+SRA_Zero
+	rd	= 26
+	rs1	= 13
+	rs2	= 27
+	i	= 87
+> check mutator: XOR_126 ... killed after 22 iterations by:
+XOR_XORI_Equiv
+	rd1	= 9
+	rd2	= 18
+	rs1	= 10
+	rs2	= 29
+	c1	= 1791
+	c2	= 462
+> check mutator: XOR_127 ... killed after 8 iterations by:
+XOR_XORI_Equiv
+	rd1	= 14
+	rd2	= 26
+	rs1	= 7
+	rs2	= 8
+	c1	= 976
+	c2	= 4294965494
+> check mutator: XOR_128 ... killed after 17 iterations by:
+XOR_XORI_Equiv
+	rd1	= 9
+	rd2	= 11
+	rs1	= 26
+	rs2	= 12
+	c1	= 1043
+	c2	= 176
+> check mutator: XOR_129 ... killed after 33 iterations by:
+XOR_Meta1
+	rd1	= 24
+	rd2	= 31
+	rs1	= 17
+	a	= 1233794111
+	b	= 1503883438
+	c	= 1730345121
+> check mutator: XOR_130 ... killed after 70 iterations by:
+XOR_XORI_Equiv
+	rd1	= 27
+	rd2	= 16
+	rs1	= 17
+	rs2	= 15
+	c1	= 1985
+	c2	= 356
+> check mutator: XOR_131 ... killed after 32 iterations by:
+XOR_Meta1
+	rd1	= 11
+	rd2	= 13
+	rs1	= 25
+	a	= 2058726611
+	b	= 1145966463
+	c	= 1792404549
+> check mutator: XOR_132 ... killed after 21 iterations by:
+XOR_Meta1
+	rd1	= 11
+	rd2	= 3
+	rs1	= 30
+	a	= 1044892040
+	b	= 247873005
+	c	= 647323753
+> check mutator: XOR_133 ... killed after 14 iterations by:
+XOR_XORI_Equiv
+	rd1	= 25
+	rd2	= 18
+	rs1	= 6
+	rs2	= 17
+	c1	= 96
+	c2	= 4294967142
+> check mutator: OR_134 ... killed after 120 iterations by:
+AND_OR_Equiv
+	rd1	= 26
+	rd2	= 27
+	rs1	= 6
+	rs2	= 14
+	a	= 1922
+	b	= -1905
+> check mutator: OR_135 ... killed after 46 iterations by:
+AND_OR_Equiv
+	rd1	= 13
+	rd2	= 22
+	rs1	= 14
+	rs2	= 23
+	a	= -1351
+	b	= -1618
+> check mutator: OR_136 ... killed after 13 iterations by:
+AND_OR_Equiv
+	rd1	= 1
+	rd2	= 11
+	rs1	= 5
+	rs2	= 10
+	a	= 2011
+	b	= -1368
+> check mutator: OR_137 ... killed after 18 iterations by:
+AND_OR_Equiv
+	rd1	= 14
+	rd2	= 9
+	rs1	= 10
+	rs2	= 5
+	a	= 1186
+	b	= 22
+> check mutator: OR_138 ... killed after 186 iterations by:
+AND_OR_Equiv
+	rd1	= 14
+	rd2	= 20
+	rs1	= 24
+	rs2	= 15
+	a	= -1688
+	b	= 81
+> check mutator: OR_139 ... killed after 14 iterations by:
+AND_OR_Equiv
+	rd1	= 2
+	rd2	= 20
+	rs1	= 16
+	rs2	= 14
+	a	= 1368
+	b	= -215
+> check mutator: OR_140 ... killed after 65 iterations by:
+LHU_Combine2
+	rs1	= 4
+	rd	= 30
+	rx	= 5
+	ry	= 21
+	a	= 1047839103
+	off	= -493
+> check mutator: OR_141 ... killed after 16 iterations by:
+LW_Combine2
+	rs1	= 15
+	rd	= 19
+	rx	= 23
+	ry	= 30
+	a	= 39165762
+	off	= 114
+> check mutator: AND_142 ... killed after 152 iterations by:
+AND_OR_Equiv
+	rd1	= 7
+	rd2	= 16
+	rs1	= 9
+	rs2	= 17
+	a	= -7
+	b	= 1584
+> check mutator: AND_143 ... killed after 428 iterations by:
+AND_OR_Equiv
+	rd1	= 26
+	rd2	= 27
+	rs1	= 18
+	rs2	= 4
+	a	= 944
+	b	= 2042
+> check mutator: AND_144 ... killed after 38 iterations by:
+AND_OR_Equiv
+	rd1	= 5
+	rd2	= 26
+	rs1	= 27
+	rs2	= 24
+	a	= -1946
+	b	= -1942
+> check mutator: AND_145 ... killed after 337 iterations by:
+AND_OR_Equiv
+	rd1	= 1
+	rd2	= 8
+	rs1	= 20
+	rs2	= 26
+	a	= 696
+	b	= -1075
+> check mutator: AND_146 ... killed after 9 iterations by:
+AND_OR_Equiv
+	rd1	= 20
+	rd2	= 5
+	rs1	= 4
+	rs2	= 25
+	a	= -1493
+	b	= 1864
+> check mutator: AND_147 ... killed after 73 iterations by:
+AND_OR_Equiv
+	rd1	= 29
+	rd2	= 6
+	rs1	= 12
+	rs2	= 31
+	a	= 5
+	b	= 586
+> check mutator: AND_148 ... killed after 342 iterations by:
+AND_OR_Equiv
+	rd1	= 29
+	rd2	= 15
+	rs1	= 1
+	rs2	= 21
+	a	= -1933
+	b	= 1246
+> check mutator: AND_149 ... killed after 13 iterations by:
+AND_OR_Equiv
+	rd1	= 20
+	rd2	= 18
+	rs1	= 19
+	rs2	= 2
+	a	= 88
+	b	= -1041
+> check mutator: SLLI_150 ... killed after 16 iterations by:
+LBU:LX_ExtCheck<(LoadInstr)1>
+	rs1	= 29
+	rd	= 1
+	rx	= 17
+	a	= 1043306203
+	off	= 87
+> check mutator: SLLI_151 ... killed after 33 iterations by:
+LXU_LX_Rel<1u>
+	rs1	= 11
+	rd	= 12
+	rx	= 27
+	ry	= 7
+	a	= 638116867
+	off	= 1503
+> check mutator: SLLI_152 ... killed after 1 iterations by:
+LH:LX_ExtCheck<(LoadInstr)2>
+	rs1	= 5
+	rd	= 19
+	rx	= 5
+	a	= 452047753
+	off	= 1641
+> check mutator: SLLI_153 ... killed after 8 iterations by:
+LXU_LX_Rel<2u>
+	rs1	= 23
+	rd	= 6
+	rx	= 14
+	ry	= 5
+	a	= 937028156
+	off	= 1620
+> check mutator: SLLI_154 ... killed after 10 iterations by:
+SX_LX_Id<2u>
+	rs1	= 27
+	rs2	= 9
+	rd	= 24
+	a	= 429751251
+	b	= 1075969258
+	off	= -1413
+> check mutator: SRLI_155 ... killed after 13 iterations by:
+SX_LX_Id<2u>
+	rs1	= 8
+	rs2	= 30
+	rd	= 7
+	a	= 188550671
+	b	= 2097121324
+	off	= 949
+> check mutator: SRLI_156 ... killed after 10 iterations by:
+ADD_Split1
+	rs1	= 1
+	rs2	= 7
+	rd1	= 4
+	rd2	= 5
+	rx	= 18
+	ry	= 3
+	a	= 1476968670
+	b	= 709888246
+> check mutator: SRLI_157 ... killed after 26 iterations by:
+LBU:LX_ExtCheck<(LoadInstr)1>
+	rs1	= 30
+	rd	= 0
+	rx	= 23
+	a	= 248426113
+	off	= 1002
+> check mutator: SRLI_158 ... killed after 143 iterations by:
+SRLI_Meta1
+	rs1	= 9
+	rd1	= 11
+	rd2	= 4
+	a	= 1680176998
+	b	= 297045255
+> check mutator: SRLI_159 ... killed after 12 iterations by:
+LXU_LX_Rel<2u>
+	rs1	= 0
+	rd	= 18
+	rx	= 17
+	ry	= 30
+	a	= 0
+	off	= 308
+> check mutator: SRLI_160 ... killed after 19 iterations by:
+LXU_LX_Rel<1u>
+	rs1	= 21
+	rd	= 3
+	rx	= 30
+	ry	= 27
+	a	= 1552396302
+	off	= 446
+> check mutator: SRAI_161 ... killed after 22 iterations by:
+LH:LX_ExtCheck<(LoadInstr)2>
+	rs1	= 1
+	rd	= 22
+	rx	= 29
+	a	= 450681041
+	off	= 589
+> check mutator: SRAI_162 ... killed after 39 iterations by:
+SRAI_preserves_sign
+	rd	= 2
+	rs1	= 28
+	i	= 1
+> check mutator: SRAI_163 ... killed after 5 iterations by:
+LH:LX_ExtCheck<(LoadInstr)2>
+	rs1	= 6
+	rd	= 14
+	rx	= 7
+	a	= 953616335
+	off	= 1111
+> check mutator: SRAI_164 ... killed after 44 iterations by:
+SRAI_preserves_sign
+	rd	= 1
+	rs1	= 10
+	i	= 1
+> check mutator: SRAI_165 ... killed after 28 iterations by:
+LB:LX_ExtCheck<(LoadInstr)0>
+	rs1	= 1
+	rd	= 27
+	rx	= 12
+	a	= 1764176526
+	off	= 1061
+> check mutator: LUI_166 ... killed after 7 iterations by:
+LW_Combine2
+	rs1	= 15
+	rd	= 6
+	rx	= 30
+	ry	= 19
+	a	= 794171669
+	off	= -249
+> check mutator: LUI_167 ... killed after 3 iterations by:
+LH:LX_AddrId<(LoadInstr)2>
+	rs1	= 1
+	rs2	= 29
+	rd1	= 19
+	rd2	= 16
+	a	= 844756404
+	off1	= -1770
+	off2	= 1815
+> check mutator: LUI_168 ... killed after 16 iterations by:
+LW_Combine2
+	rs1	= 17
+	rd	= 30
+	rx	= 31
+	ry	= 10
+	a	= 1638240850
+	off	= 954
+> check mutator: LUI_169 ... killed after 26 iterations by:
+LH:LX_AddrId<(LoadInstr)2>
+	rs1	= 1
+	rs2	= 2
+	rd1	= 3
+	rd2	= 4
+	a	= 915454156
+	off1	= 924
+	off2	= -518
+> check mutator: LUI_170 ... killed after 6 iterations by:
+SX_LX_Id<4u>
+	rs1	= 18
+	rs2	= 26
+	rd	= 3
+	a	= 232471016
+	b	= 1538340813
+	off	= 1532
+> check mutator: LUI_171 ... killed after 1 iterations by:
+ADD_Split2
+	rs1	= 26
+	rs2	= 30
+	rd1	= 24
+	rd2	= 7
+	a	= 1245598302
+	b	= 1323759846
+> check mutator: AUIPC_172 ... killed after 130830 iterations by:
+AUIPC_1
+	rd	= 27
+	u	= 1048408
+> check mutator: AUIPC_173 ... killed after 11 iterations by:
+AUIPC_1
+	rd	= 4
+	u	= 140290
+> check mutator: AUIPC_174 ... killed after 24 iterations by:
+AUIPC_1
+	rd	= 4
+	u	= 640283
+> check mutator: AUIPC_175 ... killed after 53 iterations by:
+AUIPC_1
+	rd	= 23
+	u	= 424659
+> check mutator: AUIPC_176 ... killed after 48 iterations by:
+AUIPC_1
+	rd	= 16
+	u	= 236973
+> check mutator: AUIPC_177 ... killed after 31 iterations by:
+AUIPC_1
+	rd	= 7
+	u	= 172457
+> check mutator: AUIPC_178 ... killed after 148 iterations by:
+AUIPC_1
+	rd	= 11
+	u	= 918225
+> check mutator: AUIPC_179 ... killed after 117 iterations by:
+AUIPC_1
+	rd	= 9
+	u	= 452437
+> check mutator: JAL_180 ... killed after 82 iterations by:
+JAL_AUIPC_Equiv
+	rd1	= 25
+	rd2	= 28
+	i	= 605453284
+> check mutator: JAL_181 ... killed after 2 iterations by:
+Branch_Exclusive2
+	rd1	= 1
+	rd2	= 7
+	rs1	= 4
+	rs2	= 30
+	i1	= 433
+	i2	= 4294965434
+	off	= 2522
+> check mutator: JAL_182 ... killed after 72 iterations by:
+JAL_AUIPC_Equiv
+	rd1	= 22
+	rd2	= 21
+	i	= 1860752318
+> check mutator: JAL_183 ... killed after 106 iterations by:
+JAL_back_forth
+	rd1	= 3
+	rd2	= 1
+	i	= 112
+> check mutator: JAL_184 ... killed after 2 iterations by:
+BLTU_Meta1
+	rd1	= 1
+	rd2	= 26
+	rs1	= 30
+	rs2	= 29
+	i1	= 891
+	i2	= 4294966165
+	off	= 196
+> check mutator: JAL_185 ... killed after 13 iterations by:
+BLTU_Meta1
+	rd1	= 2
+	rd2	= 3
+	rs1	= 30
+	rs2	= 10
+	i1	= 4294965501
+	i2	= 4294965382
+	off	= 3080
+> check mutator: JAL_186 ... killed after 4 iterations by:
+JAL_back_forth
+	rd1	= 26
+	rd2	= 2
+	i	= 72
+> check mutator: JAL_187 ... killed after 5 iterations by:
+JAL_zero
+	rd1	= 25
+> check mutator: JAL_188 ... killed after 103 iterations by:
+JAL_back_forth
+	rd1	= 11
+	rd2	= 14
+	i	= 224
+> check mutator: JALR_189 ... killed after 22 iterations by:
+JALR_Commutative
+	i1	= 2099
+	i2	= 1064
+	rd1	= 25
+	rd2	= 1
+	rs1	= 26
+> check mutator: JALR_190 ... killed after 115 iterations by:
+JALR_Overflow
+	rd	= 20
+> check mutator: JALR_191 ... killed after 10 iterations by:
+JALR_Additive
+	rd	= 22
+	rs1	= 7
+	i1	= -1088
+	i2	= 1912
+> check mutator: JALR_192 ... killed after 12 iterations by:
+JALR_Additive
+	rd	= 19
+	rs1	= 20
+	i1	= -1700
+	i2	= -696
+> check mutator: JALR_193 ... killed after 2 iterations by:
+JALR_Overflow
+	rd	= 1
+> check mutator: JALR_194 ... killed after 2 iterations by:
+JALR_Additive
+	rd	= 31
+	rs1	= 27
+	i1	= 1048
+	i2	= -372
+> check mutator: JALR_195 ... killed after 18 iterations by:
+JALR_Overflow
+	rd	= 28
+> check mutator: JALR_196 ... killed after 3 iterations by:
+JALR_Additive
+	rd	= 2
+	rs1	= 26
+	i1	= 182
+	i2	= 2002
+> check mutator: JALR_197 ... killed after 12 iterations by:
+JALR_Commutative
+	i1	= 2656
+	i2	= 3491
+	rd1	= 26
+	rd2	= 23
+	rs1	= 6
+> check mutator: JALR_198 ... killed after 9487 iterations by:
+JALR_Commutative
+	i1	= 1529
+	i2	= 1320
+	rd1	= 31
+	rd2	= 1
+	rs1	= 30
+> check mutator: JALR_199 ... killed after 28249 iterations by:
+JALR_Commutative
+	i1	= 832
+	i2	= 2756
+	rd1	= 16
+	rd2	= 9
+	rs1	= 26
+> check mutator: JALR_200 ... killed after 161 iterations by:
+JALR_Commutative
+	i1	= 1600
+	i2	= 1102
+	rd1	= 22
+	rd2	= 13
+	rs1	= 20
+> check mutator: SB_201 ... killed after 24 iterations by:
+SX_LX_Id<1u>
+	rs1	= 3
+	rs2	= 2
+	rd	= 1
+	a	= 390454383
+	b	= 1474894831
+	off	= 1938
+> check mutator: SB_202 ... killed after 9 iterations by:
+SB_Adjacent
+	rs1	= 29
+	rs2	= 19
+	rd1	= 25
+	rd2	= 20
+	rd3	= 8
+	addr	= 1534
+	off	= 1747
+	val	= -38
+> check mutator: SB_203 ... killed after 18 iterations by:
+SB_Adjacent
+	rs1	= 8
+	rs2	= 17
+	rd1	= 2
+	rd2	= 9
+	rd3	= 21
+	addr	= 4294966546
+	off	= 1988
+	val	= -80
+> check mutator: SB_204 ... killed after 18 iterations by:
+SX_LX_Id<1u>
+	rs1	= 29
+	rs2	= 20
+	rd	= 25
+	a	= 1544519802
+	b	= 1491356647
+	off	= 577
+> check mutator: SB_205 ... killed after 46 iterations by:
+SB_Store_Load
+	rs1	= 5
+	rs2	= 22
+	rd	= 29
+	addr	= 357
+	val	= 38
+> check mutator: SB_206 ... killed after 24 iterations by:
+SX_LX_Id<1u>
+	rs1	= 20
+	rs2	= 31
+	rd	= 20
+	a	= 832468105
+	b	= 229509469
+	off	= -40
+> check mutator: SB_207 ... killed after 15 iterations by:
+SX_LX_Id<1u>
+	rs1	= 21
+	rs2	= 6
+	rd	= 12
+	a	= 1465592
+	b	= 1494007786
+	off	= 775
+> check mutator: SB_208 ... killed after 7 iterations by:
+SX_LX_Id<1u>
+	rs1	= 3
+	rs2	= 6
+	rd	= 9
+	a	= 705138458
+	b	= 17474928
+	off	= 1889
+> check mutator: SB_209 ... killed after 19 iterations by:
+SB_Adjacent
+	rs1	= 17
+	rs2	= 12
+	rd1	= 29
+	rd2	= 2
+	rd3	= 14
+	addr	= 1763
+	off	= 4294966917
+	val	= 30
+> check mutator: SB_210 ... killed after 43 iterations by:
+SB_Adjacent
+	rs1	= 3
+	rs2	= 4
+	rd1	= 5
+	rd2	= 24
+	rd3	= 21
+	addr	= 1948
+	off	= 212
+	val	= -49
+> check mutator: SB_211 ... killed after 48 iterations by:
+SB_Adjacent
+	rs1	= 7
+	rs2	= 22
+	rd1	= 6
+	rd2	= 17
+	rd3	= 16
+	addr	= 1271
+	off	= 4294965839
+	val	= -6
+> check mutator: SH_212 ... killed after 26 iterations by:
+SH_Store_Load
+	rs1	= 8
+	rs2	= 7
+	rd	= 24
+	addr	= 1016
+	off	= 76
+	val	= 173
+> check mutator: SH_213 ... killed after 155 iterations by:
+SX_LX_Id<2u>
+	rs1	= 17
+	rs2	= 21
+	rd	= 14
+	a	= 376286094
+	b	= 2028600137
+	off	= -1096
+> check mutator: SH_214 ... killed after 8 iterations by:
+LHU_LBU_Equiv
+	rd1	= 1
+	rd2	= 15
+	rs1	= 18
+	rs2	= 16
+	addr	= 114
+	val	= 1296
+> check mutator: SH_215 ... killed after 7 iterations by:
+SH_Adjacent
+	rs1	= 29
+	rs2	= 10
+	rd1	= 7
+	rd2	= 30
+	rd3	= 11
+	addr	= 4294965250
+	off	= 124
+	val	= 157
+> check mutator: SH_216 ... killed after 6 iterations by:
+LHU_LBU_Equiv
+	rd1	= 21
+	rd2	= 31
+	rs1	= 20
+	rs2	= 19
+	addr	= 632
+	val	= 4294965690
+> check mutator: SH_217 ... killed after 17 iterations by:
+SH_Store_Load
+	rs1	= 17
+	rs2	= 2
+	rd	= 24
+	addr	= 4294965606
+	off	= 160
+	val	= 122
+> check mutator: SH_218 ... killed after 126 iterations by:
+LH_LHU_Equiv
+	rd1	= 24
+	rd2	= 19
+	rs1	= 16
+	rs2	= 20
+	addr	= 4294966684
+	val	= 4294967049
+> check mutator: SH_219 ... killed after 44 iterations by:
+SH_Store_Load
+	rs1	= 21
+	rs2	= 18
+	rd	= 24
+	addr	= 4294965736
+	off	= 122
+	val	= 155
+> check mutator: SH_220 ... killed after 5 iterations by:
+LHU_LBU_Equiv
+	rd1	= 24
+	rd2	= 6
+	rs1	= 1
+	rs2	= 18
+	addr	= 4294965410
+	val	= 598
+> check mutator: SH_221 ... killed after 3 iterations by:
+SH_Adjacent
+	rs1	= 28
+	rs2	= 23
+	rd1	= 25
+	rd2	= 24
+	rd3	= 10
+	addr	= 4294965788
+	off	= 246
+	val	= 153
+> check mutator: SH_222 ... killed after 21 iterations by:
+SX_LX_Id<2u>
+	rs1	= 9
+	rs2	= 25
+	rd	= 8
+	a	= 1427445139
+	b	= 1157076374
+	off	= -609
+> check mutator: SW_223 ... killed after 3 iterations by:
+SX_LX_Id<4u>
+	rs1	= 16
+	rs2	= 8
+	rd	= 22
+	a	= 917928416
+	b	= 1777810709
+	off	= -1984
+> check mutator: SW_224 ... killed after 65 iterations by:
+SX_LX_Id<4u>
+	rs1	= 20
+	rs2	= 30
+	rd	= 26
+	a	= 153091299
+	b	= 929178390
+	off	= -1503
+> check mutator: SW_225 ... killed after 74 iterations by:
+SX_LX_Id<4u>
+	rs1	= 4
+	rs2	= 20
+	rd	= 2
+	a	= 2094102695
+	b	= 1099881569
+	off	= 1549
+> check mutator: SW_226 ... killed after 8 iterations by:
+LW_LHU_Equiv
+	rs1	= 5
+	rs2	= 9
+	rd	= 6
+	rd1	= 7
+	rd2	= 8
+	addr	= 4294966532
+	val	= 1490
+> check mutator: SW_227 ... killed after 78 iterations by:
+LW_LHU_Equiv
+	rs1	= 27
+	rs2	= 1
+	rd	= 19
+	rd1	= 10
+	rd2	= 2
+	addr	= 4294965868
+	val	= 4294965462
+> check mutator: SW_228 ... killed after 108 iterations by:
+LW_LHU_Equiv
+	rs1	= 30
+	rs2	= 27
+	rd	= 22
+	rd1	= 18
+	rd2	= 16
+	addr	= 1204
+	val	= 4294966418
+> check mutator: SW_229 ... killed after 5 iterations by:
+SX_LX_Id<4u>
+	rs1	= 17
+	rs2	= 4
+	rd	= 26
+	a	= 2052117411
+	b	= 935877396
+	off	= 1617
+> check mutator: SW_230 ... killed after 3 iterations by:
+SX_LX_Id<4u>
+	rs1	= 20
+	rs2	= 3
+	rd	= 22
+	a	= 2071107302
+	b	= 1928250732
+	off	= -710
+> check mutator: SW_231 ... killed after 58 iterations by:
+LW_LHU_Equiv
+	rs1	= 12
+	rs2	= 4
+	rd	= 16
+	rd1	= 8
+	rd2	= 18
+	addr	= 4294967152
+	val	= 640
+> check mutator: SW_232 ... killed after 30 iterations by:
+SX_LX_Id<4u>
+	rs1	= 11
+	rs2	= 9
+	rd	= 1
+	a	= 250159263
+	b	= 1354017713
+	off	= -199
+> check mutator: SW_233 ... killed after 79 iterations by:
+LW_LHU_Equiv
+	rs1	= 1
+	rs2	= 18
+	rd	= 2
+	rd1	= 23
+	rd2	= 12
+	addr	= 700
+	val	= 4294966136
+> check mutator: LB_234 ... killed after 75 iterations by:
+SB_Adjacent
+	rs1	= 1
+	rs2	= 27
+	rd1	= 14
+	rd2	= 11
+	rd3	= 15
+	addr	= 4294965371
+	off	= 4294965271
+	val	= 106
+> check mutator: LB_235 ... killed after 9 iterations by:
+LB:LX_AddrId<(LoadInstr)0>
+	rs1	= 16
+	rs2	= 15
+	rd1	= 25
+	rd2	= 9
+	a	= 612775929
+	off1	= 262
+	off2	= 1806
+> check mutator: LB_236 ... killed after 15 iterations by:
+LXU_LX_Rel<1u>
+	rs1	= 2
+	rd	= 1
+	rx	= 15
+	ry	= 3
+	a	= 817757857
+	off	= -1686
+> check mutator: LB_237 ... killed after 22 iterations by:
+LB:LX_AddrId<(LoadInstr)0>
+	rs1	= 19
+	rs2	= 27
+	rd1	= 24
+	rd2	= 25
+	a	= 2053223596
+	off1	= 1716
+	off2	= 574
+> check mutator: LB_238 ... killed after 26 iterations by:
+LXU_LX_Rel<1u>
+	rs1	= 15
+	rd	= 11
+	rx	= 13
+	ry	= 9
+	a	= 409342851
+	off	= -1870
+> check mutator: LB_239 ... killed after 8 iterations by:
+LH_LB_Equiv
+	rs1	= 22
+	rs2	= 4
+	rd	= 24
+	rd1	= 30
+	rd2	= 31
+	addr	= 4294966322
+	val	= 241
+> check mutator: LB_240 ... killed after 47 iterations by:
+LXU_LX_Rel<1u>
+	rs1	= 30
+	rd	= 29
+	rx	= 22
+	ry	= 26
+	a	= 703188711
+	off	= -1987
+> check mutator: LB_241 ... killed after 62 iterations by:
+SB_Adjacent
+	rs1	= 31
+	rs2	= 1
+	rd1	= 30
+	rd2	= 29
+	rd3	= 6
+	addr	= 4294965965
+	off	= 1289
+	val	= 0
+> check mutator: LB_242 ... killed after 7 iterations by:
+SB_Adjacent
+	rs1	= 17
+	rs2	= 26
+	rd1	= 12
+	rd2	= 23
+	rd3	= 18
+	addr	= 4294965281
+	off	= 1121
+	val	= 53
+> check mutator: LB_243 ... killed after 5 iterations by:
+SB_Store_Load
+	rs1	= 11
+	rs2	= 2
+	rd	= 28
+	addr	= 1735
+	val	= -73
+> check mutator: LB_244 ... killed after 18 iterations by:
+SB_Store_Load
+	rs1	= 1
+	rs2	= 6
+	rd	= 18
+	addr	= 1174
+	val	= 30
+> check mutator: LB_245 ... killed after 15 iterations by:
+SB_Store_Load
+	rs1	= 23
+	rs2	= 12
+	rd	= 27
+	addr	= 4294966844
+	val	= -88
+> check mutator: LB_246 ... killed after 43 iterations by:
+LB:LX_ExtCheck<(LoadInstr)0>
+	rs1	= 25
+	rd	= 7
+	rx	= 19
+	a	= 2006663733
+	off	= 999
+> check mutator: LH_247 ... killed after 1 iterations by:
+SH_Store_Load
+	rs1	= 7
+	rs2	= 8
+	rd	= 5
+	addr	= 1744
+	off	= 134
+	val	= 194
+> check mutator: LH_248 ... killed after 4 iterations by:
+LH:LX_AddrId<(LoadInstr)2>
+	rs1	= 17
+	rs2	= 15
+	rd1	= 20
+	rd2	= 2
+	a	= 1537303214
+	off1	= -1662
+	off2	= 409
+> check mutator: LH_249 ... killed after 7 iterations by:
+LH:LX_AddrId<(LoadInstr)2>
+	rs1	= 27
+	rs2	= 11
+	rd1	= 3
+	rd2	= 12
+	a	= 1094146594
+	off1	= 880
+	off2	= -1289
+> check mutator: LH_250 ... killed after 2 iterations by:
+SH_Adjacent
+	rs1	= 31
+	rs2	= 17
+	rd1	= 1
+	rd2	= 9
+	rd3	= 23
+	addr	= 42
+	off	= 160
+	val	= 149
+> check mutator: LH_251 ... killed after 9 iterations by:
+LH_LHU_Equiv
+	rd1	= 31
+	rd2	= 24
+	rs1	= 18
+	rs2	= 14
+	addr	= 4294967028
+	val	= 1178
+> check mutator: LH_252 ... killed after 46 iterations by:
+SH_Store_Load
+	rs1	= 9
+	rs2	= 6
+	rd	= 30
+	addr	= 1526
+	off	= 232
+	val	= 89
+> check mutator: LH_253 ... killed after 23 iterations by:
+SH_Store_Load
+	rs1	= 3
+	rs2	= 20
+	rd	= 29
+	addr	= 732
+	off	= 12
+	val	= 84
+> check mutator: LH_254 ... killed after 11 iterations by:
+LH:LX_AddrId<(LoadInstr)2>
+	rs1	= 29
+	rs2	= 10
+	rd1	= 24
+	rd2	= 26
+	a	= 1373720701
+	off1	= -1933
+	off2	= 1619
+> check mutator: LH_255 ... killed after 3 iterations by:
+LXU_LX_Rel<2u>
+	rs1	= 17
+	rd	= 28
+	rx	= 16
+	ry	= 2
+	a	= 873752019
+	off	= 975
+> check mutator: LH_256 ... killed after 66 iterations by:
+LH:LX_ExtCheck<(LoadInstr)2>
+	rs1	= 2
+	rd	= 11
+	rx	= 2
+	a	= 156426561
+	off	= -307
+> check mutator: LH_257 ... killed after 21 iterations by:
+LH_LHU_Equiv
+	rd1	= 11
+	rd2	= 15
+	rs1	= 31
+	rs2	= 27
+	addr	= 750
+	val	= 376
+> check mutator: LH_258 ... killed after 62 iterations by:
+LXU_LX_Rel<2u>
+	rs1	= 28
+	rd	= 30
+	rx	= 26
+	ry	= 13
+	a	= 67253477
+	off	= 501
+> check mutator: LH_259 ... killed after 26 iterations by:
+LH_LHU_Equiv
+	rd1	= 2
+	rd2	= 5
+	rs1	= 22
+	rs2	= 8
+	addr	= 1296
+	val	= 4294966991
+> check mutator: LW_260 ... killed after 35 iterations by:
+LW:LX_AddrId<(LoadInstr)4>
+	rs1	= 13
+	rs2	= 10
+	rd1	= 24
+	rd2	= 11
+	a	= 1333716455
+	off1	= 253
+	off2	= 1796
+> check mutator: LW_261 ... killed after 35 iterations by:
+LW_Combine2
+	rs1	= 24
+	rd	= 22
+	rx	= 13
+	ry	= 8
+	a	= 1656141086
+	off	= -310
+> check mutator: LW_262 ... killed after 36 iterations by:
+LW:LX_AddrId<(LoadInstr)4>
+	rs1	= 15
+	rs2	= 21
+	rd1	= 8
+	rd2	= 30
+	a	= 1898375169
+	off1	= 1367
+	off2	= 430
+> check mutator: LW_263 ... killed after 6 iterations by:
+LW_LHU_Equiv
+	rs1	= 1
+	rs2	= 22
+	rd	= 2
+	rd1	= 5
+	rd2	= 13
+	addr	= 168
+	val	= 1568
+> check mutator: LW_264 ... killed after 50 iterations by:
+LW:LX_AddrId<(LoadInstr)4>
+	rs1	= 11
+	rs2	= 1
+	rd1	= 20
+	rd2	= 12
+	a	= 302192110
+	off1	= 1154
+	off2	= 1258
+> check mutator: LW_265 ... killed after 22 iterations by:
+SX_LX_Id<4u>
+	rs1	= 8
+	rs2	= 9
+	rd	= 27
+	a	= 958739858
+	b	= 1234434996
+	off	= 1946
+> check mutator: LW_266 ... killed after 6 iterations by:
+LW_Combine2
+	rs1	= 12
+	rd	= 28
+	rx	= 9
+	ry	= 10
+	a	= 490882513
+	off	= 1639
+> check mutator: LW_267 ... killed after 1 iterations by:
+SX_LX_Id<4u>
+	rs1	= 28
+	rs2	= 21
+	rd	= 22
+	a	= 1719957199
+	b	= 286522099
+	off	= -743
+> check mutator: LW_268 ... killed after 27 iterations by:
+SX_LX_Id<4u>
+	rs1	= 25
+	rs2	= 30
+	rd	= 15
+	a	= 894904373
+	b	= 2067481735
+	off	= -637
+> check mutator: LW_269 ... killed after 26 iterations by:
+LW_Combine2
+	rs1	= 12
+	rd	= 24
+	rx	= 6
+	ry	= 25
+	a	= 745191319
+	off	= -231
+> check mutator: LW_270 ... killed after 98 iterations by:
+SX_LX_Id<4u>
+	rs1	= 19
+	rs2	= 26
+	rd	= 27
+	a	= 966736125
+	b	= 1949962983
+	off	= -1673
+> check mutator: LW_271 ... killed after 50 iterations by:
+LW_Combine2
+	rs1	= 2
+	rd	= 4
+	rx	= 20
+	ry	= 21
+	a	= 1310216883
+	off	= -1487
+> check mutator: LW_272 ... killed after 40 iterations by:
+LW_Combine2
+	rs1	= 29
+	rd	= 13
+	rx	= 31
+	ry	= 12
+	a	= 224661173
+	off	= -1709
+> check mutator: LBU_273 ... killed after 29 iterations by:
+LBU:LX_AddrId<(LoadInstr)1>
+	rs1	= 8
+	rs2	= 14
+	rd1	= 28
+	rd2	= 29
+	a	= 1163139976
+	off1	= -1902
+	off2	= 1763
+> check mutator: LBU_274 ... killed after 10 iterations by:
+LHU_LBU_Equiv
+	rd1	= 10
+	rd2	= 14
+	rs1	= 2
+	rs2	= 22
+	addr	= 1488
+	val	= 4294966351
+> check mutator: LBU_275 ... killed after 14 iterations by:
+LXU_LX_Rel<1u>
+	rs1	= 10
+	rd	= 18
+	rx	= 19
+	ry	= 30
+	a	= 218670707
+	off	= 1906
+> check mutator: LBU_276 ... killed after 34 iterations by:
+SX_LX_Id<1u>
+	rs1	= 1
+	rs2	= 2
+	rd	= 14
+	a	= 722806039
+	b	= 99051992
+	off	= 1585
+> check mutator: LBU_277 ... killed after 19 iterations by:
+SX_LX_Id<1u>
+	rs1	= 2
+	rs2	= 22
+	rd	= 19
+	a	= 599945293
+	b	= 526294016
+	off	= 568
+> check mutator: LBU_278 ... killed after 25 iterations by:
+LHU_Combine2
+	rs1	= 6
+	rd	= 3
+	rx	= 12
+	ry	= 25
+	a	= 624580165
+	off	= -171
+> check mutator: LBU_279 ... killed after 30 iterations by:
+LHU_Combine2
+	rs1	= 21
+	rd	= 17
+	rx	= 20
+	ry	= 23
+	a	= 384367242
+	off	= 186
+> check mutator: LBU_280 ... killed after 36 iterations by:
+LXU_LX_Rel<1u>
+	rs1	= 4
+	rd	= 13
+	rx	= 6
+	ry	= 2
+	a	= 410174227
+	off	= -784
+> check mutator: LBU_281 ... killed after 26 iterations by:
+LXU_LX_Rel<1u>
+	rs1	= 7
+	rd	= 3
+	rx	= 13
+	ry	= 21
+	a	= 2076024356
+	off	= -607
+> check mutator: LBU_282 ... killed after 4 iterations by:
+LHU_LBU_Equiv
+	rd1	= 27
+	rd2	= 11
+	rs1	= 24
+	rs2	= 21
+	addr	= 4294966364
+	val	= 4294966251
+> check mutator: LBU_283 ... killed after 8 iterations by:
+SX_LX_Id<1u>
+	rs1	= 27
+	rs2	= 18
+	rd	= 13
+	a	= 739348480
+	b	= 711149040
+	off	= -1841
+> check mutator: LBU_284 ... killed after 24 iterations by:
+LXU_LX_Rel<1u>
+	rs1	= 22
+	rd	= 28
+	rx	= 29
+	ry	= 21
+	a	= 352625240
+	off	= 50
+> check mutator: LBU_285 ... killed after 14 iterations by:
+LHU_LBU_Equiv
+	rd1	= 30
+	rd2	= 11
+	rs1	= 24
+	rs2	= 28
+	addr	= 1940
+	val	= 598
+> check mutator: LHU_286 ... killed after 12 iterations by:
+LXU_LX_Rel<2u>
+	rs1	= 19
+	rd	= 1
+	rx	= 2
+	ry	= 4
+	a	= 197171264
+	off	= 1590
+> check mutator: LHU_287 ... killed after 9 iterations by:
+LHU:LX_ExtCheck<(LoadInstr)3>
+	rs1	= 16
+	rd	= 30
+	rx	= 13
+	a	= 450863969
+	off	= 1047
+> check mutator: LHU_288 ... killed after 8 iterations by:
+LXU_LX_Rel<2u>
+	rs1	= 9
+	rd	= 23
+	rx	= 7
+	ry	= 20
+	a	= 429009445
+	off	= 1223
+> check mutator: LHU_289 ... killed after 14 iterations by:
+LH_LHU_Equiv
+	rd1	= 23
+	rd2	= 3
+	rs1	= 31
+	rs2	= 9
+	addr	= 1286
+	val	= 4294966721
+> check mutator: LHU_290 ... killed after 17 iterations by:
+LHU:LX_AddrId<(LoadInstr)3>
+	rs1	= 7
+	rs2	= 6
+	rd1	= 18
+	rd2	= 24
+	a	= 1832433098
+	off1	= 1000
+	off2	= -1047
+> check mutator: LHU_291 ... killed after 25 iterations by:
+SX_LX_Id<2u>
+	rs1	= 2
+	rs2	= 18
+	rd	= 16
+	a	= 337414565
+	b	= 1861875871
+	off	= -417
+> check mutator: LHU_292 ... killed after 7 iterations by:
+LHU:LX_AddrId<(LoadInstr)3>
+	rs1	= 25
+	rs2	= 6
+	rd1	= 27
+	rd2	= 30
+	a	= 1455943544
+	off1	= 776
+	off2	= -348
+> check mutator: LHU_293 ... killed after 59 iterations by:
+SX_LX_Id<2u>
+	rs1	= 19
+	rs2	= 4
+	rd	= 26
+	a	= 939642571
+	b	= 179485844
+	off	= 1439
+> check mutator: LHU_294 ... killed after 1 iterations by:
+LHU_Combine2
+	rs1	= 29
+	rd	= 31
+	rx	= 10
+	ry	= 11
+	a	= 787629625
+	off	= 209
+> check mutator: LHU_295 ... killed after 44 iterations by:
+LW_Combine2
+	rs1	= 2
+	rd	= 13
+	rx	= 7
+	ry	= 10
+	a	= 1099147174
+	off	= -1766
+> check mutator: LHU_296 ... killed after 54 iterations by:
+SX_LX_Id<2u>
+	rs1	= 17
+	rs2	= 24
+	rd	= 28
+	a	= 1316900604
+	b	= 1474801532
+	off	= -450
+> check mutator: LHU_297 ... killed after 24 iterations by:
+SX_LX_Id<2u>
+	rs1	= 11
+	rs2	= 2
+	rd	= 28
+	a	= 2096089727
+	b	= 934773367
+	off	= -1507
+> check mutator: LHU_298 ... killed after 1 iterations by:
+LH_LHU_Equiv
+	rd1	= 10
+	rd2	= 29
+	rs1	= 12
+	rs2	= 11
+	addr	= 4294966602
+	val	= 4294965592
+> check mutator: BEQ_299 ... killed after 92 iterations by:
+BEQ_Dup
+	rs1	= 1
+	i	= -433
+	off	= 252
+> check mutator: BEQ_300 ... killed after 21 iterations by:
+Branch_Exclusive1
+	rd1	= 26
+	rd2	= 21
+	rs1	= 19
+	rs2	= 29
+	i1	= 147
+	i2	= 4294965646
+	i3	= 1482
+> check mutator: BEQ_301 ... killed after 9 iterations by:
+BEQ_Dup
+	rs1	= 11
+	i	= -1650
+	off	= 240
+> check mutator: BEQ_302 ... killed after 61 iterations by:
+ADD_BEQ_Zero
+	rd	= 17
+	rs1	= 12
+	rs2	= 13
+	i1	= 253
+	i2	= 1049
+	off	= 296
+> check mutator: BEQ_303 ... killed after 9 iterations by:
+ADD_BEQ_Zero
+	rd	= 24
+	rs1	= 26
+	rs2	= 23
+	i1	= -1257
+	i2	= -1264
+	off	= 1576
+> check mutator: BEQ_304 ... killed after 31 iterations by:
+Branch_Exclusive1
+	rd1	= 19
+	rd2	= 28
+	rs1	= 25
+	rs2	= 10
+	i1	= 4294966715
+	i2	= 4294966606
+	i3	= 454
+> check mutator: BEQ_305 ... killed after 22 iterations by:
+BEQ_Dup
+	rs1	= 21
+	i	= -834
+	off	= 112
+> check mutator: BEQ_306 ... killed after 107 iterations by:
+BEQ_Dup
+	rs1	= 14
+	i	= -1895
+	off	= 84
+> check mutator: BEQ_307 ... killed after 3 iterations by:
+BEQ_Dup
+	rs1	= 2
+	i	= -598
+	off	= 92
+> check mutator: BEQ_308 ... killed after 132911 iterations by:
+ADD_BEQ_Zero
+	rd	= 1
+	rs1	= 30
+	rs2	= 2
+	i1	= -367
+	i2	= -367
+	off	= 2302
+> check mutator: BEQ_309 ... killed after 75 iterations by:
+BEQ_Dup
+	rs1	= 7
+	i	= 826
+	off	= 256
+> check mutator: BEQ_310 ... killed after 19 iterations by:
+Branch_Exclusive2
+	rd1	= 18
+	rd2	= 9
+	rs1	= 25
+	rs2	= 27
+	i1	= 1327
+	i2	= 1664
+	off	= 3780
+> check mutator: BEQ_311 ... killed after 18 iterations by:
+Branch_Exclusive1
+	rd1	= 31
+	rd2	= 23
+	rs1	= 29
+	rs2	= 13
+	i1	= 1909
+	i2	= 1240
+	i3	= 2462
+> check mutator: BEQ_312 ... killed after 8 iterations by:
+BEQ_Dup
+	rs1	= 3
+	i	= 559
+	off	= 152
+> check mutator: BEQ_313 ... killed after 170 iterations by:
+BEQ_Dup
+	rs1	= 4
+	i	= -573
+	off	= 48
+> check mutator: BNE_314 ... killed after 86 iterations by:
+Branch_Exclusive2
+	rd1	= 21
+	rd2	= 23
+	rs1	= 1
+	rs2	= 5
+	i1	= 4294965417
+	i2	= 1402
+	off	= 1494
+> check mutator: BNE_315 ... killed after 2 iterations by:
+Branch_Exclusive2
+	rd1	= 11
+	rd2	= 24
+	rs1	= 29
+	rs2	= 1
+	i1	= 244
+	i2	= 4294966832
+	off	= 3560
+> check mutator: BNE_316 ... killed after 64 iterations by:
+Branch_Exclusive1
+	rd1	= 23
+	rd2	= 4
+	rs1	= 1
+	rs2	= 25
+	i1	= 4294965480
+	i2	= 4294966797
+	i3	= 1606
+> check mutator: BNE_317 ... killed after 2 iterations by:
+Branch_Exclusive1
+	rd1	= 5
+	rd2	= 17
+	rs1	= 16
+	rs2	= 21
+	i1	= 1815
+	i2	= 1430
+	i3	= 708
+> check mutator: BNE_318 ... killed after 74 iterations by:
+Branch_Exclusive2
+	rd1	= 3
+	rd2	= 29
+	rs1	= 19
+	rs2	= 4
+	i1	= 937
+	i2	= 899
+	off	= 3530
+> check mutator: BNE_319 ... killed after 7 iterations by:
+Branch_Exclusive1
+	rd1	= 30
+	rd2	= 29
+	rs1	= 2
+	rs2	= 31
+	i1	= 446
+	i2	= 1987
+	i3	= 1668
+> check mutator: BNE_320 ... killed after 1 iterations by:
+Branch_Exclusive2
+	rd1	= 4
+	rd2	= 13
+	rs1	= 31
+	rs2	= 15
+	i1	= 1488
+	i2	= 4294966410
+	off	= 1848
+> check mutator: BNE_321 ... killed after 106 iterations by:
+Branch_Exclusive2
+	rd1	= 26
+	rd2	= 1
+	rs1	= 23
+	rs2	= 29
+	i1	= 4294966907
+	i2	= 166
+	off	= 2764
+> check mutator: BNE_322 ... killed after 7 iterations by:
+Branch_Exclusive2
+	rd1	= 30
+	rd2	= 10
+	rs1	= 1
+	rs2	= 14
+	i1	= 810
+	i2	= 4294966377
+	off	= 2764
+> check mutator: BNE_323 ... killed after 69 iterations by:
+Branch_Exclusive2
+	rd1	= 22
+	rd2	= 25
+	rs1	= 15
+	rs2	= 16
+	i1	= 633
+	i2	= 4294965998
+	off	= 3906
+> check mutator: BNE_324 ... killed after 427 iterations by:
+BNE_Dup
+	rs1	= 9
+	i	= 510
+	off	= 228
+> check mutator: BNE_325 ... killed after 23 iterations by:
+Branch_Exclusive2
+	rd1	= 30
+	rd2	= 15
+	rs1	= 8
+	rs2	= 1
+	i1	= 732
+	i2	= 4294966129
+	off	= 268
+> check mutator: BNE_326 ... killed after 1 iterations by:
+Branch_Exclusive2
+	rd1	= 20
+	rd2	= 18
+	rs1	= 29
+	rs2	= 4
+	i1	= 4294965320
+	i2	= 4294967159
+	off	= 2840
+> check mutator: BNE_327 ... killed after 48 iterations by:
+BNE_Dup
+	rs1	= 11
+	i	= -137
+	off	= 240
+> check mutator: BNE_328 ... killed after 12 iterations by:
+Branch_Exclusive1
+	rd1	= 18
+	rd2	= 10
+	rs1	= 14
+	rs2	= 29
+	i1	= 1729
+	i2	= 1889
+	i3	= 1892
+> check mutator: BLT_329 ... killed after 163 iterations by:
+BLT_Triangle
+	rd1	= 26
+	rd2	= 20
+	rs1	= 3
+	rs2	= 30
+	i1	= -1273
+	i2	= 1663
+	off	= 548
+> check mutator: BLT_330 ... killed after 16 iterations by:
+BLT_Meta1
+	rd1	= 18
+	rd2	= 2
+	rs1	= 31
+	rs2	= 30
+	i1	= 4294965317
+	i2	= 4294965715
+	off	= 578
+> check mutator: BLT_331 ... killed after 22 iterations by:
+BGE_BLTE_Equiv
+	rd1	= 22
+	rd2	= 1
+	rs1	= 5
+	rs2	= 23
+	i1	= 1423
+	i2	= 2899
+	off	= 1008
+> check mutator: BLT_332 ... killed after 97 iterations by:
+BLT_Dup
+	rs1	= 11
+	i	= -819
+	off	= 232
+> check mutator: BLT_333 ... killed after 9 iterations by:
+BLT_Meta1
+	rd1	= 13
+	rd2	= 15
+	rs1	= 17
+	rs2	= 28
+	i1	= 1610
+	i2	= 4294965817
+	off	= 3298
+> check mutator: BLT_334 ... killed after 28 iterations by:
+Branch_Exclusive2
+	rd1	= 7
+	rd2	= 20
+	rs1	= 18
+	rs2	= 10
+	i1	= 4294966474
+	i2	= 152
+	off	= 3758
+> check mutator: BLT_335 ... killed after 6 iterations by:
+BLT_Meta1
+	rd1	= 24
+	rd2	= 23
+	rs1	= 4
+	rs2	= 1
+	i1	= 686
+	i2	= 2
+	off	= 3428
+> check mutator: BLT_336 ... killed after 4 iterations by:
+BGE_BLTE_Equiv
+	rd1	= 11
+	rd2	= 31
+	rs1	= 14
+	rs2	= 30
+	i1	= 3459
+	i2	= 286
+	off	= 928
+> check mutator: BLT_337 ... killed after 2 iterations by:
+Branch_Exclusive2
+	rd1	= 27
+	rd2	= 7
+	rs1	= 5
+	rs2	= 11
+	i1	= 304
+	i2	= 570
+	off	= 2126
+> check mutator: BLT_338 ... killed after 17 iterations by:
+BLT_Meta1
+	rd1	= 6
+	rd2	= 25
+	rs1	= 13
+	rs2	= 18
+	i1	= 4294967148
+	i2	= 4294966833
+	off	= 3978
+> check mutator: BLT_339 ... killed after 27 iterations by:
+BLT_SLT_Equiv
+	rd1	= 13
+	rd2	= 4
+	rs1	= 22
+	rs2	= 17
+	i1	= 477
+	i2	= 19
+	off	= 454
+> check mutator: BLT_340 ... killed after 63 iterations by:
+BGE_BLTE_Equiv
+	rd1	= 12
+	rd2	= 1
+	rs1	= 28
+	rs2	= 21
+	i1	= 1718
+	i2	= 725
+	off	= 1408
+> check mutator: BLT_341 ... killed after 15 iterations by:
+BLT_Meta1
+	rd1	= 20
+	rd2	= 10
+	rs1	= 30
+	rs2	= 31
+	i1	= 1181
+	i2	= 1161
+	off	= 3236
+> check mutator: BLT_342 ... killed after 8 iterations by:
+Branch_Exclusive2
+	rd1	= 1
+	rd2	= 19
+	rs1	= 25
+	rs2	= 24
+	i1	= 4294966736
+	i2	= 4294966314
+	off	= 3346
+> check mutator: BLT_343 ... killed after 47 iterations by:
+BLT_Meta1
+	rd1	= 3
+	rd2	= 18
+	rs1	= 4
+	rs2	= 14
+	i1	= 4294966943
+	i2	= 4294965576
+	off	= 1994
+> check mutator: BGE_344 ... killed after 30 iterations by:
+BGE_Triangle
+	rd1	= 14
+	rd2	= 10
+	rs1	= 31
+	rs2	= 13
+	i1	= 1323
+	i2	= 1611
+	off	= 3076
+> check mutator: BGE_345 ... killed after 18 iterations by:
+BGE_BLTE_Equiv
+	rd1	= 22
+	rd2	= 9
+	rs1	= 2
+	rs2	= 21
+	i1	= 2425
+	i2	= 1558
+	off	= 1134
+> check mutator: BGE_346 ... killed after 32 iterations by:
+BGE_Dup
+	rs1	= 1
+	i	= 1295
+	off	= 24
+> check mutator: BGE_347 ... killed after 9 iterations by:
+BGE_Triangle
+	rd1	= 20
+	rd2	= 17
+	rs1	= 29
+	rs2	= 10
+	i1	= -596
+	i2	= -1189
+	off	= 2218
+> check mutator: BGE_348 ... killed after 27 iterations by:
+Branch_Exclusive2
+	rd1	= 23
+	rd2	= 30
+	rs1	= 24
+	rs2	= 18
+	i1	= 1743
+	i2	= 4294966126
+	off	= 1956
+> check mutator: BGE_349 ... killed after 7 iterations by:
+BGE_Dup
+	rs1	= 18
+	i	= -1592
+	off	= 164
+> check mutator: BGE_350 ... killed after 35 iterations by:
+BGE_Triangle
+	rd1	= 5
+	rd2	= 13
+	rs1	= 6
+	rs2	= 4
+	i1	= -849
+	i2	= -1812
+	off	= 1784
+> check mutator: BGE_351 ... killed after 28 iterations by:
+BGE_Triangle
+	rd1	= 14
+	rd2	= 5
+	rs1	= 20
+	rs2	= 15
+	i1	= -1834
+	i2	= 1911
+	off	= 2614
+> check mutator: BGE_352 ... killed after 7 iterations by:
+BGE_Dup
+	rs1	= 6
+	i	= -748
+	off	= 188
+> check mutator: BGE_353 ... killed after 220 iterations by:
+BGE_Triangle
+	rd1	= 26
+	rd2	= 14
+	rs1	= 24
+	rs2	= 21
+	i1	= -1397
+	i2	= -1248
+	off	= 3728
+> check mutator: BGE_354 ... killed after 3 iterations by:
+BGE_Triangle
+	rd1	= 10
+	rd2	= 9
+	rs1	= 21
+	rs2	= 11
+	i1	= 1119
+	i2	= 1868
+	off	= 2148
+> check mutator: BGE_355 ... killed after 23 iterations by:
+Branch_Exclusive2
+	rd1	= 25
+	rd2	= 7
+	rs1	= 8
+	rs2	= 1
+	i1	= 4294965723
+	i2	= 1502
+	off	= 838
+> check mutator: BGE_356 ... killed after 18 iterations by:
+BGE_BLTE_Equiv
+	rd1	= 3
+	rd2	= 10
+	rs1	= 28
+	rs2	= 22
+	i1	= 288
+	i2	= 1852
+	off	= 1620
+> check mutator: BGE_357 ... killed after 105 iterations by:
+BGE_Triangle
+	rd1	= 5
+	rd2	= 22
+	rs1	= 15
+	rs2	= 6
+	i1	= -1047
+	i2	= -716
+	off	= 2738
+> check mutator: BGE_358 ... killed after 3 iterations by:
+BGE_Dup
+	rs1	= 30
+	i	= -185
+	off	= 52
+> check mutator: BLTU_359 ... killed after 8 iterations by:
+BLTU_1
+	rd1	= 6
+	rd2	= 11
+	rs1	= 9
+	rs2	= 14
+	i1	= 4294965287
+	i2	= 4294966233
+	off	= 2658
+> check mutator: BLTU_360 ... killed after 18 iterations by:
+BLTU_Meta1
+	rd1	= 28
+	rd2	= 6
+	rs1	= 3
+	rs2	= 25
+	i1	= 4294966328
+	i2	= 4294965288
+	off	= 4008
+> check mutator: BLTU_361 ... killed after 339 iterations by:
+Branch_Exclusive2
+	rd1	= 11
+	rd2	= 26
+	rs1	= 18
+	rs2	= 15
+	i1	= 999
+	i2	= 4294965493
+	off	= 2762
+> check mutator: BLTU_362 ... killed after 688300 iterations by:
+Branch_Exclusive2
+	rd1	= 24
+	rd2	= 5
+	rs1	= 16
+	rs2	= 23
+	i1	= 1742
+	i2	= 1742
+	off	= 3420
+> check mutator: BLTU_363 ... killed after 48 iterations by:
+BLTU_Meta1
+	rd1	= 30
+	rd2	= 22
+	rs1	= 3
+	rs2	= 23
+	i1	= 4294966729
+	i2	= 4294965752
+	off	= 2878
+> check mutator: BLTU_364 ... killed after 99 iterations by:
+Branch_Exclusive2
+	rd1	= 18
+	rd2	= 14
+	rs1	= 7
+	rs2	= 6
+	i1	= 4294965480
+	i2	= 1293
+	off	= 1028
+> check mutator: BLTU_365 ... killed after 13 iterations by:
+BLTU_Meta1
+	rd1	= 7
+	rd2	= 22
+	rs1	= 25
+	rs2	= 14
+	i1	= 4294965441
+	i2	= 1769
+	off	= 4072
+> check mutator: BLTU_366 ... killed after 76 iterations by:
+BLTU_Meta1
+	rd1	= 31
+	rd2	= 27
+	rs1	= 3
+	rs2	= 10
+	i1	= 4294966226
+	i2	= 4294966873
+	off	= 344
+> check mutator: BLTU_367 ... killed after 37 iterations by:
+BLTU_Meta1
+	rd1	= 14
+	rd2	= 1
+	rs1	= 22
+	rs2	= 15
+	i1	= 4294966272
+	i2	= 337
+	off	= 3494
+> check mutator: BLTU_368 ... killed after 7 iterations by:
+Branch_Exclusive2
+	rd1	= 31
+	rd2	= 12
+	rs1	= 13
+	rs2	= 22
+	i1	= 4294966022
+	i2	= 4294966476
+	off	= 3902
+> check mutator: BLTU_369 ... killed after 54 iterations by:
+Branch_Exclusive2
+	rd1	= 1
+	rd2	= 25
+	rs1	= 13
+	rs2	= 5
+	i1	= 4294967131
+	i2	= 4294965411
+	off	= 948
+> check mutator: BLTU_370 ... killed after 80 iterations by:
+BLTU_1
+	rd1	= 6
+	rd2	= 5
+	rs1	= 13
+	rs2	= 20
+	i1	= 566
+	i2	= 1524
+	off	= 804
+> check mutator: BLTU_371 ... killed after 15 iterations by:
+BLTU_Meta1
+	rd1	= 24
+	rd2	= 14
+	rs1	= 9
+	rs2	= 1
+	i1	= 1519
+	i2	= 1581
+	off	= 3094
+> check mutator: BLTU_372 ... killed after 8 iterations by:
+Branch_Exclusive2
+	rd1	= 19
+	rd2	= 30
+	rs1	= 6
+	rs2	= 11
+	i1	= 666
+	i2	= 4294966607
+	off	= 216
+> check mutator: BLTU_373 ... killed after 13 iterations by:
+Branch_Exclusive2
+	rd1	= 19
+	rd2	= 25
+	rs1	= 11
+	rs2	= 17
+	i1	= 431
+	i2	= 4294966019
+	off	= 296
+> check mutator: BLTU_374 ... killed after 42 iterations by:
+BLTU_1
+	rd1	= 19
+	rd2	= 4
+	rs1	= 3
+	rs2	= 17
+	i1	= 1008
+	i2	= 4294967014
+	off	= 3530
+> check mutator: BGEU_375 ... killed after 115 iterations by:
+BGEU_Antisymmetry
+	rd1	= 1
+	rd2	= 2
+	rs1	= 24
+	rs2	= 10
+	i1	= 4294967287
+	i2	= 4294965295
+	i3	= 3038
+> check mutator: BGEU_376 ... killed after 99 iterations by:
+BGEU_Antisymmetry
+	rd1	= 3
+	rd2	= 5
+	rs1	= 24
+	rs2	= 27
+	i1	= 799
+	i2	= 1483
+	i3	= 462
+> check mutator: BGEU_377 ... killed after 43802 iterations by:
+Branch_Exclusive2
+	rd1	= 30
+	rd2	= 27
+	rs1	= 12
+	rs2	= 14
+	i1	= 1525
+	i2	= 1525
+	off	= 2576
+> check mutator: BGEU_378 ... killed after 67 iterations by:
+BGEU_Antisymmetry
+	rd1	= 19
+	rd2	= 10
+	rs1	= 28
+	rs2	= 29
+	i1	= 1915
+	i2	= 4294965266
+	i3	= 2030
+> check mutator: BGEU_379 ... killed after 91 iterations by:
+BGEU_Antisymmetry
+	rd1	= 8
+	rd2	= 26
+	rs1	= 13
+	rs2	= 12
+	i1	= 1340
+	i2	= 535
+	i3	= 2558
+> check mutator: BGEU_380 ... killed after 121 iterations by:
+BGEU_Antisymmetry
+	rd1	= 22
+	rd2	= 5
+	rs1	= 20
+	rs2	= 21
+	i1	= 588
+	i2	= 1240
+	i3	= 306
+> check mutator: BGEU_381 ... killed after 19 iterations by:
+BGEU_Antisymmetry
+	rd1	= 1
+	rd2	= 2
+	rs1	= 26
+	rs2	= 25
+	i1	= 4294966941
+	i2	= 4294966547
+	i3	= 3898
+> check mutator: BGEU_382 ... killed after 39 iterations by:
+BGEU_Antisymmetry
+	rd1	= 30
+	rd2	= 28
+	rs1	= 16
+	rs2	= 2
+	i1	= 329
+	i2	= 4294966717
+	i3	= 1956
+> check mutator: BGEU_383 ... killed after 289 iterations by:
+Branch_Exclusive2
+	rd1	= 14
+	rd2	= 13
+	rs1	= 4
+	rs2	= 1
+	i1	= 1024
+	i2	= 132
+	off	= 3024
+> check mutator: BGEU_384 ... killed after 154 iterations by:
+BGEU_Antisymmetry
+	rd1	= 19
+	rd2	= 1
+	rs1	= 17
+	rs2	= 27
+	i1	= 4294966269
+	i2	= 4294967133
+	i3	= 2124
+> check mutator: BGEU_385 ... killed after 48 iterations by:
+BGEU_Antisymmetry
+	rd1	= 26
+	rd2	= 7
+	rs1	= 4
+	rs2	= 24
+	i1	= 403
+	i2	= 4294965327
+	i3	= 2908
+> check mutator: BGEU_386 ... killed after 139 iterations by:
+Branch_Exclusive2
+	rd1	= 10
+	rd2	= 26
+	rs1	= 1
+	rs2	= 25
+	i1	= 1617
+	i2	= 4294965917
+	off	= 658
+> check mutator: BGEU_387 ... killed after 33 iterations by:
+BGEU_Antisymmetry
+	rd1	= 25
+	rd2	= 16
+	rs1	= 14
+	rs2	= 24
+	i1	= 191
+	i2	= 1256
+	i3	= 3078
+> check mutator: BGEU_388 ... killed after 5 iterations by:
+Branch_Exclusive2
+	rd1	= 6
+	rd2	= 7
+	rs1	= 26
+	rs2	= 30
+	i1	= 4294966117
+	i2	= 4294966242
+	off	= 1668
+> check mutator: BGEU_389 ... killed after 94 iterations by:
+BGEU_Antisymmetry
+	rd1	= 18
+	rd2	= 10
+	rs1	= 4
+	rs2	= 11
+	i1	= 1878
+	i2	= 4294966594
+	i3	= 2442
+> check mutator: BGEU_390 ... killed after 125 iterations by:
+Branch_Exclusive2
+	rd1	= 6
+	rd2	= 7
+	rs1	= 19
+	rs2	= 10
+	i1	= 4294965860
+	i2	= 1424
+	off	= 928
+Unkilled mutation 'Empty Mutation'.
+
+total killed mutations: 389 / 390
+Test statistics:
+ADDI_Assoc: 0
+ADDI_Comm: 0
+ADD_ADDI_Equiv: 0
+ADD_Assoc: 0
+ADD_Change: 0
+ADD_Comm: 0
+ADD_Inverse: 0
+ADD_Meta1: 0
+ADD_Meta2: 0
+BEQ_Zero: 0
+BLT_Asymmetry: 0
+LUI1: 0
+SLLI_Meta1: 0
+SLLI_adds_zeroes: 0
+BLT_Dup: 1
+ADD_ADDI_zero: 1
+ADDI_Inverse: 1
+AND_Equiv: 1
+BLT_Triangle: 1
+JAL_zero: 1
+LH_LB_Equiv: 1
+LX_ExtCheck<(LoadInstr)3>: 1
+SRLI_Meta1: 1
+SRL_Meta1: 1
+SRL_Meta2: 1
+SRL_1: 2
+BNE_Dup: 2
+ADD_Split2: 2
+JAL_AUIPC_Equiv: 2
+LX_ExtCheck<(LoadInstr)0>: 2
+SLTIU_Unsigned: 2
+SLTI_3: 2
+SRAI_preserves_sign: 2
+SRA_1: 2
+SRA_preserves_sign: 2
+SUB_ADD_Equiv: 3
+SRA_Zero: 3
+SLTI_1: 3
+SLTI_2: 3
+OR_Equiv: 3
+JAL_back_forth: 3
+ADD_BEQ_Zero: 3
+BLTU_1: 3
+JALR_Overflow: 3
+LX_AddrId<(LoadInstr)0>: 3
+LX_AddrId<(LoadInstr)3>: 3
+SLTI_PosNeg: 3
+XORI_Invert: 3
+SUB_Negates: 4
+SRL_2: 4
+LX_ExtCheck<(LoadInstr)1>: 4
+LX_AddrId<(LoadInstr)4>: 4
+LX_AddrId<(LoadInstr)1>: 4
+LHU_Combine2: 4
+ADD_Split1: 4
+BGE_Dup: 4
+BGE_SLT_Equiv: 4
+BLT_SLT_Equiv: 4
+JALR_Additive: 4
+SB_Store_Load: 4
+SH_Adjacent: 4
+SLL_Meta2: 4
+SLTI_4: 5
+SLL_Meta1: 5
+LX_ExtCheck<(LoadInstr)2>: 5
+LX_AddrId<(LoadInstr)2>: 5
+JALR_Commutative: 5
+BGE_BLTE_Equiv: 5
+XOR_Meta1: 6
+SLTU_1: 6
+SLTU_2: 6
+SH_Store_Load: 6
+LH_LHU_Equiv: 6
+LHU_LBU_Equiv: 6
+BLT_Meta1: 6
+LXU_LX_Rel<2u>: 6
+Branch_Exclusive1: 7
+BGE_Triangle: 7
+LW_LHU_Equiv: 7
+SB_Adjacent: 8
+BLTU_Meta1: 8
+AUIPC_1: 8
+BEQ_Dup: 8
+SX_LX_Id<2u>: 8
+SX_LX_Id<1u>: 9
+LXU_LX_Rel<1u>: 9
+LW_Combine2: 9
+XOR_XORI_Equiv: 10
+SX_LX_Id<4u>: 11
+BGEU_Antisymmetry: 11
+AND_OR_1: 11
+SLTIU_Asymmetric: 12
+AND_OR_Equiv: 14
+Branch_Exclusive2: 28
