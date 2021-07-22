@@ -90,7 +90,7 @@ def make_mutator(opcode, impl, itest):
     mutator = mutator_pattern.format(opcode, itest, impl)
     return mutator
 
-
+stats = {}
 def replace_operators(impl):
     op_groups = [
         {" + ", " - "},
@@ -105,14 +105,18 @@ def replace_operators(impl):
         {"(uint32_t)", "(int32_t)"},
     ]
 
+    gn = 1
     for g in op_groups:
         for op in g:
             loc = impl.find(op)
             if loc > -1:
                 for no in g.difference({op}):
-                    print(f"/* {op} -> {no} */")
+                    #print(f"/* {op} -> {no} */")
+                    if not gn in stats:
+                        stats[gn] = 0
+                    stats[gn] += 1
                     yield impl.replace(op, no).strip()
-
+        gn += 1
 
 def make_mutators(source_file):
     source = read_source(source_file)
@@ -130,11 +134,13 @@ def make_mutators(source_file):
             sm = "std::make_shared<{0}_{1}>()".format(opcode, itest)
             mutators.append(sm)
             itest += 1
-            print(mutator)
+            #print(mutator)
 
-    print("std::vector<std::shared_ptr<exec_mutator_if>> mutators{")
-    print(",\n".join(mutators))
-    print("};")
+    #print("std::vector<std::shared_ptr<exec_mutator_if>> mutators{")
+    #print(",\n".join(mutators))
+    #print("};")
+    for n in stats:
+        print(stats[n])
 
 
 if __name__ == "__main__":
